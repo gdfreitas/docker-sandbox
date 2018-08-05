@@ -68,7 +68,7 @@
   3. `docker container start` inicializa o container;  
   4. `docker container exec` executa o container em modo interativo;  
 
-- listar os containers (flag `-a` exibe um histórico dos containers):
+- listar os containers (flag `-a` exibe um histórico dos containers, `q` lista somente os IDs):
   1. `docker container ls`
   2. `docker container ps`
   3. `docker container list`
@@ -88,6 +88,12 @@
 - remover imagens ou containers:  
   1. `docker image rm IMAGE_ID`
   2. `docker container rm CONTAINER_ID`
+
+- parar todos os containers `docker container stop $(docker container ls -aq)`
+
+- remover todos os containers `docker container rm $(docker container ls -aq)`
+
+- remover todas as imagens `docker image rm $(docker images -q)`
 
 - executa o container e automaticamente remove, não aparecendoo na lista do comando `ps -a` `docker container run --rm debian bash --version`
 

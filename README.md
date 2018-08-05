@@ -93,7 +93,7 @@
 
 - remover todos os containers `docker container rm $(docker container ls -aq)`
 
-- remover todas as imagens `docker image rm $(docker images -q)`
+- remover todas as imagens `docker image rm $(docker image -q)`
 
 - executa o container e automaticamente remove, não aparecendoo na lista do comando `ps -a` `docker container run --rm debian bash --version`
 
@@ -111,3 +111,5 @@
 
 - rodar container em modo Daemon (background, sem interatividade) `docker container run -d --name daemon-basic -p 8080:80 -v D:/dev/git/docker/volume/html:/usr/share/nginx/html nginx`
 
+- construir uma imagem (conforme Dockerfile) `docker image build -t NOME_IMAGEM DIRETORIO_IMAGEM`
+  - Ex: `docker image build -t custom-image-build .`

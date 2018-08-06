@@ -122,3 +122,29 @@
 - login: `docker login --username=USUARIO` e então digitar a senha;
 
 - fazer o push da imagem para o repositório (hub.docker): `docker image push gabrieldfreitas/custom-hello-world:1.0`
+
+## Redes no Docker
+
+### Tipos de redes
+
+- None Network (completamente isolado, sem interfaceamento de rede)
+- Bridge Network (Padrão)
+- Host Network
+- Overlay Network (Swarm)
+
+### Comandos
+
+- visualizar as redes disponíveis `docker network ls`
+
+- rodar um container com o tipo de rede **Network None** no modo daemon: `docker container run -d --net none debian`
+
+- rodar um container com com a imagem alpine (distribuição do linux) e verificar interfaces com o comando ifconfig:  
+  - modo bridge: `docker container run --rm alpine ash -c "ifconfig"`
+  - modo none: `docker container run --rm --net none alpine ash -c "ifconfig"`
+
+- inspecionar uma rede do docker: `docker network inspect bridge`
+
+- criando 2 containers para testar ping entre eles: `docker container run -d --name container1 alpine sleep 1000`  
+  - `docker container exec -it container2 ping 172.17.0.2`
+
+- criando uma rede com base em um driver que já existe: `docker network create --driver bridge rede_nova`

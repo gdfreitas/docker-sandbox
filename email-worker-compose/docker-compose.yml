@@ -15,6 +15,6 @@ services:
     image: nginx:1.13
     volumes:
       # arquivos do site
-      - ./web:/usr/share/nginx/html/
+      - ./app:/usr/share/nginx/html/
     ports:
       - 80:80

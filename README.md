@@ -166,3 +166,4 @@
 - `\c email_sender` -- conectar ao banco email_sender
 - `\d emails` -- gere uma descrição da tabela para validar que o script `init.sql` foi executado corretamente
 - `docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'` executar select em uma tabela de um banco de dados
+- `docker-compose up -d --scale worker=3` escalando serviço com build customizada e escalando com 3 containers

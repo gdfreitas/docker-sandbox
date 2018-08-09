@@ -16,6 +16,8 @@ services:
     volumes:
       # arquivos do site
       - ./app:/usr/share/nginx/html/
+      # configuração do nginx (proxy-reverso, etc)
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
   api:
@@ -25,5 +27,3 @@ services:
       - ./api:/api
     working_dir: /api
     command: bash ./app.sh # utilizar o bash no inicio do comando permite o arquivo ser executado, alternativa para não ter que executar um chmod +x 
-    ports:
-      - 8080:8080

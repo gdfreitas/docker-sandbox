@@ -1,4 +1,15 @@
 version: '3'
+volumes:
+  dados:
 services:
   db:
     image: postgres:9.6
+    volumes:
+      # volume dos dados
+      - dados:/var/lib/postgresql/data 
+
+      # scripts
+      - ./scripts:/scripts 
+
+      # convenção padrão da imagem do postgres > após inicializar o banco irá executar todos os scripts ".sql" e ".sh" que estiverem neste diretório
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql 

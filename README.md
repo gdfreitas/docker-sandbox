@@ -159,4 +159,8 @@
   - `docker-compose exec db psql -U postgres -c '\l'`
     - `-U USUARIO` informa o usuário que executará o comando. No caso o usuário é o padrão `postgres`
     - `-c COMANDO` comando que será executado. No caso `'\l'` lista os bancos de dados
-
+  - `docker-compose exec db psql -U postgres -f /scripts/check.sql` executa um arquivo dentro da instância do docker
+- abrir o bash dentro de um container `docker exec -it COTAINER_NAME bash`
+- `\l` -- lista todos os bancos de dados
+- `\c email_sender` -- conectar ao banco email_sender
+- `\d emails` -- gere uma descrição da tabela para validar que o script `init.sql` foi executado corretamente

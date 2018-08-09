@@ -1,6 +1,9 @@
 version: '3'
 volumes:
   dados:
+networks:
+  banco:
+  app:
 services:
   db:
     image: postgres:9.6
@@ -11,6 +14,8 @@ services:
       - ./scripts:/scripts 
       # convenção padrão da imagem do postgres > após inicializar o banco irá executar todos os scripts ".sql" e ".sh" que estiverem neste diretório
       - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql 
+    networks:
+      - banco
   frontend:
     image: nginx:1.13
     volumes:
@@ -20,6 +25,10 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 80:80
+    networks:
+      - app
+    depends_on:
+      - api
   api:
     image: python:3.6
     volumes:
@@ -27,3 +36,8 @@ services:
       - ./api:/api
     working_dir: /api
     command: bash ./app.sh # utilizar o bash no inicio do comando permite o arquivo ser executado, alternativa para não ter que executar um chmod +x 
+    networks:
+      - banco
+      - app
+    depends_on:
+      - db

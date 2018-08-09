@@ -153,7 +153,8 @@
 
 ### Comandos Docker Compose
 
-- subir/baixar os serviços do docker em modo compose `docker-compose up/down` flags: `-d` para rodar em modo daemon
+- subir/baixar os serviços do docker-compose `docker-compose up/down` flags: `-d` para rodar em modo daemon
+- `docker-compose logs -f -t` acompanhar os logs do compose
 - visualizar os processos rodando `docker-compose ps`
 - rodar comando psql dentro de um serviço de uma instância que está ativa chamado **db**
   - `docker-compose exec db psql -U postgres -c '\l'`

@@ -18,3 +18,12 @@ services:
       - ./app:/usr/share/nginx/html/
     ports:
       - 80:80
+  api:
+    image: python:3.6
+    volumes:
+      # api
+      - ./api:/api
+    working_dir: /api
+    command: bash ./app.sh # utilizar o bash no inicio do comando permite o arquivo ser executado, alternativa para não ter que executar um chmod +x 
+    ports:
+      - 8080:8080

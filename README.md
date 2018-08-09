@@ -132,7 +132,7 @@
 - Host Network
 - Overlay Network (Swarm)
 
-### Comandos
+### Comandos de Rede
 
 - visualizar as redes disponíveis `docker network ls`
 
@@ -148,3 +148,15 @@
   - `docker container exec -it container2 ping 172.17.0.2`
 
 - criando uma rede com base em um driver que já existe: `docker network create --driver bridge rede_nova`
+
+## Docker Compose
+
+### Comandos Docker Compose
+
+- subir/baixar os serviços do docker em modo compose `docker-compose up/down` flags: `-d` para rodar em modo daemon
+- visualizar os processos rodando `docker-compose ps`
+- rodar comando psql dentro de um serviço de uma instância que está ativa chamado **db**
+  - `docker-compose exec db psql -U postgres -c '\l'`
+    - `-U USUARIO` informa o usuário que executará o comando. No caso o usuário é o padrão `postgres`
+    - `-c COMANDO` comando que será executado. No caso `'\l'` lista os bancos de dados
+

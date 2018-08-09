@@ -44,6 +44,8 @@ services:
     depends_on:
       - db
       - queue
+    environment:
+      - DB_NAME=email_sender
   queue:
     image: redis:3.2
     networks:

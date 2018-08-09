@@ -165,3 +165,8 @@ Repositório destinado à conceitos e exemplos com Docker
 - `\d emails` -- gere uma descrição da tabela para validar que o script `init.sql` foi executado corretamente
 - `docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'` executar select em uma tabela de um banco de dados
 - `docker-compose up -d --scale worker=3` escalando serviço com build customizada e escalando com 3 containers
+
+## Referências
+
+- [Curso Docker - Cod3r @ Udemy](https://www.udemy.com/curso-docker/)
+- [Docker Documentation](https://docs.docker.com/)

@@ -27,6 +27,22 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 - Host e container compartilham o Kernel (menor consumo, otimização);
 - Empacota software com vários níveis de isolamento (memória, cpu, rede, etc);
 
+## Docker Editions
+
+- Docker CE (Community Edition) e Docker EE (Enterprise Edition)
+  - Community Edition (free) vs Enterprise Edition (paid)
+    - recomendado para grandes empresas, possui suporte 24/7, produtos extras, certificado em plataformas específicas.
+
+- Edge vs Stable versionamento
+  - Edge (beta) todo mês é lançado uma nova versão; que virará stable no quarto mês;
+
+- Três principaius tipos instalações: direct, mac/windows e cloud
+  - Linux ([diferente por distribuição](https://store.docker.com/), não usar gerenciador de pacotes padrão)
+    - `curl -sSL https://get.docker.com/ | sh`
+  - [Windows](https://www.docker.com/docker-windows) (ou Docker Toolbox para versões diferente da 10 Pro/Enterprise)
+  - Mac (ou Docker Toolbox, não usar brew)
+  - Cloud: AWS/Azure/Google, versões do docker, com características/aplicações específicas da empresa que está distribuindo.
+
 ### Características de contêineres Docker
 
 - Possui uma **segregação de processos** no mesmo Kernel (isolamento);
@@ -52,25 +68,10 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 - O grande objetivo dessa estratégia de dividir uma imagem em camadas é o reuso;
 - É possível compor imagens a partir de camadas de outras imagens;
 
-### Arquitetura
+### Cheatsheet
 
-- Client  
-  - CLI (interface de linha de comando)
-  - REST API (também disponibilizada para gerenciamento)
-  - Kitematic (ferramenta gráfica para gerenciamento)
-- Host
-  - DAEMON (Docker Engine, entre outros nomes)
-  - Images (Cache local das que foram baixadas do Registry)
-  - Containers
-- Registry
-  - repositórios, o padrão é DockerHub
-
-## Uso básico do Docker
-
-- Instalar o Docker Community Edition conforme OS;
-- HelloWorld do Docker `docker container run hello-world` irá baixar esta imagem do docker.hub e irá imprimir uma mensagem de hello world.
-
-### Comandos e exemplos
+- HelloWorld:
+  - `docker container run hello-world` irá baixar esta imagem do docker.hub e irá imprimir uma mensagem de hello world.
 
 - O comando `run` é uma composição de 4 comandos:
 

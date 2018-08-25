@@ -4,7 +4,19 @@ Repositório destinado à conceitos e exemplos com Docker
 
 ## O que é Docker
 
-É uma plataforma que permite a criação e execução de aplicações de maneira rápida e prática através de "pacotes" de software em unidades padronizadas chamadas de contêineres que possuem tudo que o software precisa para ser executado, incluindo bibliotecas, ferramentas de sistema, código e runtime. O docker permite implantar, escalar e mover rapidamente aplicações em qualquer ambiente, otimizando a utilização de recursos.
+É uma plataforma que permite a criação e execução de aplicações de maneira rápida e prática através de pacotes de software em unidades padronizadas chamadas de contêineres que possuem tudo que o software precisa para ser executado, incluindo bibliotecas, ferramentas de sistema, código e runtime. O docker permite implantar, escalar e mover rapidamente aplicações em qualquer ambiente, otimizando a utilização de recursos.
+
+### História
+
+O docker foi lançado em 2013 como um projeto open-source por uma empresa chamada .cloud (dot cloud) que era uma empresa de hospedagem que atualmente não existe mais. Após um ano do lançamento o Docker se tornou tão grande que eles fecharam a antiga empresa e abriram uma nova chamada Docker Inc.
+
+### Por que Docker? Por que não utilizar uma VM (Virtual Machine)?
+
+- Rapidez, agilidade _"Docker is all about speed"_
+  - para desenvolver, para construir, testar, lançar, atualizar e recuperar.
+- O consumo de recursos é muito menor com o Docker;
+  - Herda o Kernel e entre outros recursos da máquina host;
+- A inicialização de um container levaria 1s, e da máquina virtual com o sistema operacional inteiro, levaria cerca de 1min;
 
 ## Principais características
 
@@ -14,12 +26,6 @@ Repositório destinado à conceitos e exemplos com Docker
 - Open Source e escrito em Go (linguagem);
 - Host e container compartilham o Kernel (menor consumo, otimização);
 - Empacota software com vários níveis de isolamento (memória, cpu, rede, etc);
-
-### Por que não utilizar uma VM (Virtual Machine)
-
-- O consumo de recursos é muito menor em containers;
-- O docker herda o Kernel e entre outros recursos da máquina host;
-- A inicialização de um container levaria 1s, e da máquina virtual com o sistema operacional inteiro, levaria 1m;
 
 ### Características de contêineres Docker
 
@@ -168,5 +174,7 @@ Repositório destinado à conceitos e exemplos com Docker
 
 ## Referências
 
-- [Curso Docker - Cod3r @ Udemy](https://www.udemy.com/curso-docker/)
+- [Docker Mastery: The Complete Toolset From a Docker Captain](https://www.udemy.com/docker-mastery)
+- [Cloud Native Landscape](https://landscape.cncf.io/)
+- [Curso Docker - Cod3r](https://www.udemy.com/curso-docker/)
 - [Docker Documentation](https://docs.docker.com/)

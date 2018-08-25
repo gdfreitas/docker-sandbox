@@ -43,11 +43,11 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
   - Mac (ou Docker Toolbox, não usar brew)
   - Cloud: AWS/Azure/Google, versões do docker, com características/aplicações específicas da empresa que está distribuindo.
 
-## Contâiner
+## Container
 
 - *Definição:* é uma instância de uma _imagem_ rodando como processo;
 
-### Características de contâineres
+### Características de containers
 
 - É possível ter inúmeros contâiners rodando a partir da mesma imagem;
 - Containers são somente processos rodando na máquina host, limitados aos recursos que podem acessar, acabam quando o processo para.
@@ -158,7 +158,7 @@ Remover os containers criados:
 ### O que realmente acontece quando executado o comando `docker container run`
 
 1. O docker procura pela imagem localmente no computador em um repositório chamado de "image cache".
-2. Se nào encontrar, busca no repositório remoto (por padrão é o Docker Hub)
+2. Se não encontrar, busca no repositório remoto (por padrão é o Docker Hub)
 3. Busca a última versão da imagem (padrão quando não é especificado versão. Ex `nginx:latest`)
 4. Cria um novo container baseado na imagem e prepara para inicializar
 5. Atribui um IP virtual na rede privada do docker engine;

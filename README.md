@@ -50,12 +50,13 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 ### Características de contâineres
 
 - É possível ter inúmeros contâiners rodando a partir da mesma imagem;
+- Containers são somente processos rodando na máquina host, limitados aos recursos que podem acessar, acabam quando o processo para.
 - Possui uma **segregação de processos** no mesmo Kernel (isolamento);
   - A partir de um processo, permite criar subprocessos isolados da máquina host;
 - Possui um **sistema de arquivos** criados a partir de uma imagem docker;
 - Ambientes leves e portáteis no qual aplicações são executadas;
 - Encapsula todos os binários e bibliotecas necessárias para execução de uma aplicação;
-- Algo entre **chroot** e uma **VM**;
+- Também é chamado como algo entre **chroot** e uma **VM**;
   - **chroot** é uma forma de direcionar uma nova pasta raiz para um determinado processo, uma forma primitiva de "aprisionar" o processo à este escopo de arquivos/pastas;
   - **VM** nível de isolamento máximo, novo O.S, binários, arquivos, kernel, libs, etc.
 
@@ -100,7 +101,7 @@ Hello World! no Docker:
   - cria um container com esta imagem em um novo processo
   - `--publish 80:80` publica/expõe a porta 80 do computador host na porta 80 interna do container, direcionando todo tráfego do localhost para o container. Pode ser utilizada a abreviação `-p 80:80`. Sequência: `<PORTA_HOST:PORTA_CONTAINER>`
 - `docker container run -p 80:80 --detach nginx`
-  - `--detach` permite a execução do container em background, liberando a linha de comando.
+  - `--detach` permite a execução do container em background, liberando a linha de comando. Pode ser utilizada a abreviação `-d`
 
 Iniciar, parar, reiniciar um container:
 
@@ -114,6 +115,14 @@ Exibir lista dos containers/images/volumes/networks:
 - Por padrão lista somente containers rodando, com a flag `-a` lista histórico de containers criados.
 - Em adição a flag anterior se colocado `q` irá listar somente os ids dos containers.
 
+Consultando os logs de um container específico:
+
+- `docker container logs CONTAINER_NAME` (pode ser utilizado as `-f` para seguir automaticamente o log, e `-t` para exibir timestamp nas mensagens)
+
+Consultar os processos rodando em um container específico:
+
+- `docker container top CONTAINER_NAME`
+
 **Atenção!**
 
 - `docker container run ID` sempre cria um novo container;
@@ -125,13 +134,10 @@ Especificando um nome para o container:
 
 - `docker container run --publish 80:80 --detach --name CONTAINER_NAME nginx`
 
-Consultando os logs de um container específico:
+Definindo variáveis de ambiente:
 
-- `docker container logs CONTAINER_NAME`
-
-Consultar os processos rodando em um container específico:
-
-- `docker container top CONTAINER_NAME`
+- `-e` ou `-env`
+  - Exemplo: `-env MYSQL_RANDOM_ROOT_PASSWORD=yes`
 
 Remover os containers criados:
 
@@ -139,16 +145,140 @@ Remover os containers criados:
 
 - `docker container rm $(docker container ls -aq)`
 
-**Dica:** como visto no segundo exemplo, é permitido executar outros comandos como por exemplo listar todos os ids de containers criados e utiliza-los como argumentos de um comando.  
+**Dica:** como visto no segundo exemplo, é permitido executar outros comandos como por exemplo listar todos os ids de containers criados e utiliza-los como argumentos de um comando.
+
 **Observação:** o docker nào permite remover containers que estão ativos como medida de segurança, logo é preciso parar o container para posteriormente remove-lo. Entretanto, o comando `docker container rm` permite a flag `-f` para forçar a remoção dos containers, o que permite remover containers que estão rodando.
 
-- O comando `docker run` é uma composição de 4 comandos:
-  1. `docker image pull` baixa a imagem do registry para maquina host;  
-  2. `docker container create` cria o container;  
-  3. `docker container start` inicializa o container;  
-  4. `docker container exec` executa comandos no container em modo interativo;  
+### Windows 10 - Como visualizar os processos que estão rodando no computador host (Moby VM)
 
-- inspecionar informações sobre o container: `docker container inspect CONTAINER_NAME`
+- Baixar imagem e inicializar container interativo `docker run -it --rm --privileged --pid=host justincormack/nsenter1`
+- Visualizar os processos que estão rodando `ps aux`
+  - Filtrar a saída por um termo específico `ps aux | grep mongo`
+
+### O que realmente acontece quando executado o comando `docker container run`
+
+1. O docker procura pela imagem localmente no computador em um repositório chamado de "image cache".
+2. Se nào encontrar, busca no repositório remoto (por padrão é o Docker Hub)
+3. Busca a última versão da imagem (padrão quando não é especificado versão. Ex `nginx:latest`)
+4. Cria um novo container baseado na imagem e prepara para inicializar
+5. Atribui um IP virtual na rede privada do docker engine;
+6. Quando específicado uma publicação (`--publish PORT:PORT`) expoe a porta na máquina host e direciona todo tráfego para a porta de dentro do container.
+7. Inicializa o container usando o comando ("CMD") no Dockerfile da imagem.
+
+### Exercício 1
+
+Rodar três containers: `nginx` na porta 80:80, `mysql` 3306:3306, `httpd` 8080:80, todos em modo detach e nomeados apropriadamente.
+
+Ao criar o container do `mysql` deve ser usado a opção `--env` ou `-e` para passar a variável de ambiente `MYSQL_RANDOM_ROOT_PASSOWORD=yes`
+
+Usar o `docker container logs` no container do mysql para achar a senha aleatória que foi gerada na inicialização.
+
+**Resolução:**
+
+Lembrando: `-d` = `--detach`, `-p` = `--publish`, `-e` = `--env`
+
+- `docker container run -d --name db -p 3306:3306  -e MYSQL_RANDOM_ROOT_PASSWORD=yes mysql`
+- `docker container run -d --name webserver -p 8080:80 httpd`
+- `docker container run -d --name proxy -p 80:80 nginx`
+
+### Monitoramento de containers
+
+Listar os processos de um container específico:
+
+- `docker container top CONTAINER_NAME`
+
+Inspecionar informações (metadados: startup, config, volumes, networking, etc) de um container específico:
+
+- `docker container inspect CONTAINER_NAME`
+
+Obter estatísticas de performance de todos os containers
+
+- `docker container stats`
+
+### Shell
+
+#### O comando `run`
+
+Inicializar um novo container no modo interativo
+
+- `docker container run -it`
+
+Executar comandos adicionais em um container existente
+
+- `docker container exec -it`
+
+Exemplo 1: `docker container run -it --name proxy nginx bash`
+
+**Importante:** no Exemplo 1 acima foi sobrescrito o comando inicial da imagem do nginx para executar o `bash` para podermos listar os arquivos que estão dentro do container no modo interativo. Entretanto, ao sair do bash, o container exitou, Por quê? Isso ocorre devido ao ciclo de vida dos containers serem baseados no ciclo de vida do comando que o inicializa.
+
+Exemplo 2: `docker container run -it ubuntu`
+
+A imagem do ubuntu já tem por padrão no seu comando de inicialização o `bash`, após exitar o container é exitado também. Vale ressaltar que, para inicializar este container novamente não é com a flag `-it`, e sim com `-ai`, exemplo: `docker container start -ai ubuntu`
+
+#### O comando `exec`
+
+Com este comando é possível executar um comando e inicializar um outro processo dentro de um container específico, e contráriando o `run` não afeta o processo root/ciclo de vida do container.
+
+Exemplo: `docker container exec -it CONTAINER_NAME bash`
+
+#### Alpine
+
+É uma imagem muito pequena do linux (4MB, a do ubuntu é 84MB), que não conta com o `bash` por exemplo. Entretanto possui `sh` e que através dele é possível instalar o `bash` utilizando o comando `apk` que é o package manager desta distribuição. Mais em: [Package Management Basics: apt, uym, dnf, pkg](https://www.digitalocean.com/community/tutorials/package-management-basics-apt-yum-dnf-pkg)
+
+Exemplo: `docker container run -it alpine sh`
+
+## Network
+
+O docker usa o conceito de "Batteries included, but removable", que basicamente diz que, o que precisa para funcionar você já tem, mas se quiser customizar, você pode!
+
+- None Network (completamente isolado, sem interfaceamento de rede)
+- Bridge Network (Padrão)
+- Host Network
+- Overlay Network (Swarm)
+
+### Tráfego e Firewalls
+
+Como as redes do docker movem pacotes para dentro e para fora.
+
+**Componentes:** Internet Física | Host PC | Docker Network | Container
+
+Ao criar um container e "anexá-lo" com uma rede virtual do tipo bridge (padrão), esta rede é automaticamente anexada à interface de rede da máquina host. Quando especificado que libere uma porta `-p 80:80`, irá fazer com que a porta 80 seja liberada na interface de rede da máquina host e automaticamente enviar tudo que chegue através desta porta para a rede virtual para a porta 80 do container que foi criado dentro desta rede.
+
+Isto permite criar múltiplos containers dentro de uma mesma rede não expondo portas caso não seja necessário. Ex: banco de dados.
+
+Visualizar as redes disponíveis do Docker:
+
+- `docker network ls`
+
+Visualizar as portas sendo utilizadas em um container específico:
+
+- `docker container port CONTAINER_NAME`
+
+Inspecionar as configurações de rede um container:
+
+- `docker container inspect --format '{{ .NetworkSettings.IPAddress }}' webhost`
+
+**Observação:** o `--format` permite formatar a saída do inspect no padrão da linguagem Go (linguagem em que o Docker é desenvolvido), permitindo neste exemplo acima, acessar o nó do json em que contém as propriedades de Network. Mais em: [Docker's --format option for filtering cli output](https://docs.docker.com/config/formatting/)
+
+Rodar um container com o tipo de rede **Network None**:
+
+- `docker container run -d --net none debian`
+
+Rodar um container com com a imagem alpine e verificar interfaces de rede com o comando ifconfig:
+
+- modo bridge: `docker container run --rm alpine ash -c "ifconfig"`
+- modo none: `docker container run --rm --net none alpine ash -c "ifconfig"`
+
+Inspecionar uma rede do docker: `docker network inspect bridge`
+
+Criando 2 containers para testar ping entre eles:
+
+- `docker container run -d --name container1 alpine sleep 1000`  
+- `docker container exec -it container2 ping 172.17.0.2`
+
+Criando uma rede com base em um driver que já existe: `docker network create --driver bridge rede_nova`
+
+## TODO: reorganizar documentação
 
 - exibir o sistema que está sendo executado dentro do container: `docker container exec daemon-basic uname -or`
 
@@ -187,32 +317,6 @@ Remover os containers criados:
 
 - fazer o push da imagem para o repositório (hub.docker): `docker image push gabrieldfreitas/custom-hello-world:1.0`
 
-## Redes no Docker [Docker | Docs - Networking Overview](https://docs.docker.com/network/)
-
-### Tipos de redes
-
-- None Network (completamente isolado, sem interfaceamento de rede)
-- Bridge Network (Padrão)
-- Host Network
-- Overlay Network (Swarm)
-
-### Comandos de Rede
-
-- visualizar as redes disponíveis `docker network ls`
-
-- rodar um container com o tipo de rede **Network None** no modo daemon: `docker container run -d --net none debian`
-
-- rodar um container com com a imagem alpine (distribuição do linux) e verificar interfaces com o comando ifconfig:  
-  - modo bridge: `docker container run --rm alpine ash -c "ifconfig"`
-  - modo none: `docker container run --rm --net none alpine ash -c "ifconfig"`
-
-- inspecionar uma rede do docker: `docker network inspect bridge`
-
-- criando 2 containers para testar ping entre eles: `docker container run -d --name container1 alpine sleep 1000`  
-  - `docker container exec -it container2 ping 172.17.0.2`
-
-- criando uma rede com base em um driver que já existe: `docker network create --driver bridge rede_nova`
-
 ## Docker Compose
 
 ### Comandos Docker Compose
@@ -235,6 +339,7 @@ Remover os containers criados:
 ## Referências
 
 - [Docker Mastery: The Complete Toolset From a Docker Captain](https://www.udemy.com/docker-mastery)
+- [Docker | Docs - Networking Overview](https://docs.docker.com/network/)
 - [Cloud Native Landscape](https://landscape.cncf.io/)
 - [Curso Docker - Cod3r](https://www.udemy.com/curso-docker/)
 - [Docker Documentation](https://docs.docker.com/)

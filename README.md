@@ -43,22 +43,31 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
   - Mac (ou Docker Toolbox, não usar brew)
   - Cloud: AWS/Azure/Google, versões do docker, com características/aplicações específicas da empresa que está distribuindo.
 
-### Características de contêineres Docker
+## Contâiner
 
+- *Definição:* é uma instância de uma _imagem_ rodando como processo;
+
+### Características de contâineres
+
+- É possível ter inúmeros contâiners rodando a partir da mesma imagem;
 - Possui uma **segregação de processos** no mesmo Kernel (isolamento);
   - A partir de um processo, permite criar subprocessos isolados da máquina host;
 - Possui um **sistema de arquivos** criados a partir de uma imagem docker;
 - Ambientes leves e portáteis no qual aplicações são executadas;
-- Encapsula todos os binários e bibliotecas necessárias para execução de uma App;
+- Encapsula todos os binários e bibliotecas necessárias para execução de uma aplicação;
 - Algo entre **chroot** e uma **VM**;
   - **chroot** é uma forma de direcionar uma nova pasta raiz para um determinado processo, uma forma primitiva de "aprisionar" o processo à este escopo de arquivos/pastas;
   - **VM** nível de isolamento máximo, novo O.S, binários, arquivos, kernel, libs, etc.
 
-### Caracterítiscas de imagens Docker
+## Imagem
 
+- *Definição:* é um composto com os binários, códigos-fontes, bibliotecas, etc que compõe uma aplicação;
+
+### Características imagens
+
+- O registry (repositório) padrão do Docker para imagens é chamado de Docker Hub [hub.docker.com](https://hub.docker.com/explore/);
 - Modelo de sistema de arquivo somente-leitura usado para criar containers;
 - Imagens são criadas através de um processo chamado **build**;
-- São armazenadas em repositórios no Registry [hub.docker.com](https://hub.docker.com/explore/);
 - São compostas por uma ou mais camadas, chamadas também de **layers**;
 - Uma camada representa uma ou mais mudanças no sistema de arquivo;
 - Uma camada é também chamada de imagem intermediária;
@@ -68,26 +77,76 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 - O grande objetivo dessa estratégia de dividir uma imagem em camadas é o reuso;
 - É possível compor imagens a partir de camadas de outras imagens;
 
-### Cheatsheet
+## Cheatsheet
 
-- HelloWorld:
-  - `docker container run hello-world` irá baixar esta imagem do docker.hub e irá imprimir uma mensagem de hello world.
+Exibir um resumo dos comandos disponíveis e uma breve descrição para cada  
 
-- O comando `run` é uma composição de 4 comandos:
+- `docker`
 
+Exibir a versão do client (cli: linha de comando) e do server (Engine: no windows é chamado de serviço, no mac/linux é chamado de daemon):
+
+- `docker version`
+
+Exibir todas as configurações da engine do docker:
+
+- `docker info`
+
+Hello World! no Docker:
+
+- `docker container run hello-world` irá baixar esta imagem do Docker Hub e irá imprimir uma mensagem de "Hello World" no log do container.
+
+- `docker container run --publish 80:80 nginx`
+  - baixa a última versão da imagem do `nginx` do Docker Hub
+  - cria um container com esta imagem em um novo processo
+  - `--publish 80:80` publica/expõe a porta 80 do computador host na porta 80 interna do container, direcionando todo tráfego do localhost para o container. Pode ser utilizada a abreviação `-p 80:80`. Sequência: `<PORTA_HOST:PORTA_CONTAINER>`
+- `docker container run -p 80:80 --detach nginx`
+  - `--detach` permite a execução do container em background, liberando a linha de comando.
+
+Iniciar, parar, reiniciar um container:
+
+- `docker container start/stop/restart CONTAINER NAME or ID`
+
+**Observação** É necessário somente os 3 primeiros dígitos do id para ser único e docker conseguir identificar qual container está sendo referenciado.
+
+Exibir lista dos containers/images/volumes/networks:
+
+- `docker container ls`, `docker container ps`, `docker container list`
+- Por padrão lista somente containers rodando, com a flag `-a` lista histórico de containers criados.
+- Em adição a flag anterior se colocado `q` irá listar somente os ids dos containers.
+
+**Atenção!**
+
+- `docker container run ID` sempre cria um novo container;
+- `docker container start ID` inicializa um container que já existe e que foi parado;
+
+**Observação**: O nome de um container deve ser sempre único, e se não especifícarmos na criação, o docker cria automaticamente um nome aleatório para o container com base em uma lista open-source de nomes e sobrenomes de hackers e cientistas famosos.
+
+Especificando um nome para o container:
+
+- `docker container run --publish 80:80 --detach --name CONTAINER_NAME nginx`
+
+Consultando os logs de um container específico:
+
+- `docker container logs CONTAINER_NAME`
+
+Consultar os processos rodando em um container específico:
+
+- `docker container top CONTAINER_NAME`
+
+Remover os containers criados:
+
+- `docker container rm IDs...`
+
+- `docker container rm $(docker container ls -aq)`
+
+**Dica:** como visto no segundo exemplo, é permitido executar outros comandos como por exemplo listar todos os ids de containers criados e utiliza-los como argumentos de um comando.  
+**Observação:** o docker nào permite remover containers que estão ativos como medida de segurança, logo é preciso parar o container para posteriormente remove-lo. Entretanto, o comando `docker container rm` permite a flag `-f` para forçar a remoção dos containers, o que permite remover containers que estão rodando.
+
+- O comando `docker run` é uma composição de 4 comandos:
   1. `docker image pull` baixa a imagem do registry para maquina host;  
   2. `docker container create` cria o container;  
   3. `docker container start` inicializa o container;  
   4. `docker container exec` executa comandos no container em modo interativo;  
-
-- listar container/images/volumes/networks (flag `-a` exibe um histórico dos containers, `q` lista somente os IDs):
-  1. `docker container ls`
-  2. `docker container ps`
-  3. `docker container list`
-
-- iniciar, parar, reiniciar um container: `docker container start/stop/restart CONTAINER_NAME`
-
-- exibir logs de um container: `docker container logs CONTAINER_NAME`
 
 - inspecionar informações sobre o container: `docker container inspect CONTAINER_NAME`
 

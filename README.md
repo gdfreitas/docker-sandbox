@@ -246,6 +246,8 @@ Ao criar um container e "anexá-lo" com uma rede virtual do tipo bridge (padrão
 
 Isto permite criar múltiplos containers dentro de uma mesma rede não expondo portas caso não seja necessário. Ex: banco de dados.
 
+**Importante** ao utilizar uma rede do tipo `host` o container será vinculado diretamente na rede do host, ganhando performance, porém, sacrificando a camada extra que o container provê como forma de segurança através das redes virtuais.
+
 Visualizar as redes disponíveis do Docker:
 
 - `docker network ls`
@@ -259,6 +261,65 @@ Inspecionar as configurações de rede um container:
 - `docker container inspect --format '{{ .NetworkSettings.IPAddress }}' webhost`
 
 **Observação:** o `--format` permite formatar a saída do inspect no padrão da linguagem Go (linguagem em que o Docker é desenvolvido), permitindo neste exemplo acima, acessar o nó do json em que contém as propriedades de Network. Mais em: [Docker's --format option for filtering cli output](https://docs.docker.com/config/formatting/)
+
+Inspecionar uma network
+
+- `docker network inspect`
+
+Criar uma network
+
+- `docker network create --driver`
+
+Exemplo 1: criar uma rede com base no driver padrão `bridge`
+
+- `docker network create my_app_net`  
+
+Exemplo 2: criar um container com uma configuração de rede específica
+
+- `docker container run -d --name new_nginx --network my_app_net nginx`
+
+Vincular/desvincular uma network à um container
+
+- `docker network connect/disconnect`
+
+Exemplo 1: vinculando uma rede à um container (Observação: é possível ter um container trabalhando com mais de uma rede)
+
+- `docker network connect NETWORK_ID CONTAINER_ID`
+
+### Docker DNS
+
+A engine do docker possui um "servidor de DNS" integrado que os containers utilizam como padrão.
+
+**Observação:** o docker define por padrão que o nome do host será o nome do container, porém, podemos definir aliases.
+
+Exemplo: criar 02 containers em uma mesma rede a partir da imagem do `nginx` e executar um ping entre eles utilizando o nome do container como hostname.
+
+Criar dois container na mesma rede:
+
+- `docker container run -d --name my_nginx --network my_app_net nginx`
+- `docker container run -d --name new_nginx --network my_app_net nginx`
+
+Como a imagem do nginx não vem mais com o comando ping, temos que instalar um dentro do container:
+
+- Executar o bash modo interativo `docker container exec -it my_nginx bash`
+- bash@root: `apt-get update && apt-get install -y iputils-ping`
+
+Verificar o ping utilizando nome dos containers
+
+- `docker container exec -it my_nginx ping new_nginx`
+
+### Exercício
+
+Utilizar containers para testar a ferramenta `curl` em diferentes ditribuições do linux. Utilizar dois terminais para inicializar o bash no `centos:7` e `ubuntu:14.04` utilizando modo `-it`. Utilizar `--rm` na criação do container para que o mesmo quando finalizar seu ciclo de vida seja deletado. Garantir que `curl` está instalado na última versão para cada distro: `ubuntu`: `apt-get update && apt-get install curl` e `centos`: `yum update curl` e verificar a versão `curl version`.
+
+1. `docker container run --rm --name centos -it centos:7 bash`
+  bash@root: `yum update curl`
+  bash@root: `curl --version` ==> 7.29.0
+2. `docker container run --rm --name ubuntu -it ubuntu:14.04 bash`
+  bash@root: `apt-get update && apt-get install curl`
+  bash@root: `curl --version` ==> 7.35.0
+
+## TODO: reorganizar documentação
 
 Rodar um container com o tipo de rede **Network None**:
 
@@ -277,8 +338,6 @@ Criando 2 containers para testar ping entre eles:
 - `docker container exec -it container2 ping 172.17.0.2`
 
 Criando uma rede com base em um driver que já existe: `docker network create --driver bridge rede_nova`
-
-## TODO: reorganizar documentação
 
 - exibir o sistema que está sendo executado dentro do container: `docker container exec daemon-basic uname -or`
 

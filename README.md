@@ -378,6 +378,12 @@ Construir uma imagem a partir de um Dockerfile
 
 - `docker image build -t customnginx .`
 
+### Exercício Imagem 1 (`./dockerfile-assingment-1`)
+
+1. Dockerizar uma aplicação existente em Node.js
+2. Criar o Dockerfile. Construir, Testar, Publicar para o Docker Hub, Apagar local, Rodar novamente.
+3. Utilizar versão oficial do Alpine para o `node` 6.x image
+
 ## TODO: reorganizar documentação
 
 Rodar um container com o tipo de rede **Network None**:

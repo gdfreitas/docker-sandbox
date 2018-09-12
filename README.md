@@ -78,7 +78,7 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 - O grande objetivo dessa estratégia de dividir uma imagem em camadas é o reuso;
 - É possível compor imagens a partir de camadas de outras imagens;
 
-## Cheatsheet
+## Hands-on
 
 Exibir um resumo dos comandos disponíveis e uma breve descrição para cada  
 
@@ -331,6 +331,49 @@ Aplicar o mecanismo de Round Robin utilizando Docker ao criar múltiplos contain
 4. Criar container do alpine e executar o dns lookup com nome search `docker container run --rm --net dude alpine nslookup search`
 5. Criar container do centos e executar curl `docker container run --rm --net dude centos curl -s search:9200`
 
+## Image [Docker Image Specification v1.0.0](https://github.com/moby/moby/blob/master/image/spec/v1.md)
+
+## O que é uma imagem
+
+- Binários de uma aplicação e suas dependências
+- Metadados sobre os dados da imagem e como rodá-la
+- Definição oficial: "...uma imagem é uma coleção ordenada de um sistema de arquivos e os parametros de execução correspondentes para serem utilizados em conjunto com um container em seu tempo de execução..."
+- Não é um S.O completo. Não tem kernel, nem módulos do kernel (drivers, etc)
+
+Listar as imagens que estão no cache local
+
+- `docker image ls`
+
+Baixar uma imagem (irá baixar a tag `latest` que acompanha um hash, caso a mesma já esteja no repositório local como latest, este hash será a garantia de que sejam a mesma, caso contrário baixa novamente)
+
+- `docker image pull nginx`
+
+Exibir histórico de uma imagem imagem, contendo suas camadas:
+
+- `docker history nginx`
+
+**Observação:** a técnica de aplicar alterações em imagens através de camadas (_layers_) diminui consideravelmente o tamanho entre essas imagens porque, como é possível identificar através do comando anterior, só irá ser considerado alterações em mesma camada, as outras camadas caso não sejam alteradas continuarão com o mesmo SHA1 hash e não serão duplicadas e não será necessário efetuar o download/upload mais de uma vez.
+
+Exemplo: criar servidores http do `SITE A` e do `SITE B`
+
+`MinhaImagem | Apache | Port 80 | COPY A ou COPY B`
+
+Nota-se que as três primeiras camadas permanecem as mesmas, porém na última, existe a necessidade de copiar dois diretórios diferentes. É aí que o Docker não armazena toda a pilha de camadas para cada build para o A e para o B, as camadas que continuarem a mesma, serão baixadas somente 1 vez para ambas as builds. 
+
+**Observação:** ao iniciar um container sobre uma imagem, é criado uma layer adicional de leitura/escrita.
+
+Inspecionar uma imagem permite verificar suas configurações, portas, comandos, variáveis de ambientes, autor, arquitetura, id, etc.
+
+- `docker image inspect nginx`
+
+Criar tag de uma imagem:
+
+- `docker image tag nginx gabrieldfreitas/nginx`
+
+Subir imagem para o [repositório pessoal do Docker Hub](https://hub.docker.com/u/gabrieldfreitas/) (é necessário estar autenticado `docker login`)
+
+- `docker image push gabrieldfreitas/nginx`
+
 ## TODO: reorganizar documentação
 
 Rodar um container com o tipo de rede **Network None**:
@@ -414,3 +457,4 @@ Criando uma rede com base em um driver que já existe: `docker network create --
 - [Cloud Native Landscape](https://landscape.cncf.io/)
 - [Curso Docker - Cod3r](https://www.udemy.com/curso-docker/)
 - [Docker Documentation](https://docs.docker.com/)
+- [The Moby Project](https://github.com/moby/moby)

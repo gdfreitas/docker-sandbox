@@ -358,7 +358,7 @@ Exemplo: criar servidores http do `SITE A` e do `SITE B`
 
 `MinhaImagem | Apache | Port 80 | COPY A ou COPY B`
 
-Nota-se que as três primeiras camadas permanecem as mesmas, porém na última, existe a necessidade de copiar dois diretórios diferentes. É aí que o Docker não armazena toda a pilha de camadas para cada build para o A e para o B, as camadas que continuarem a mesma, serão baixadas somente 1 vez para ambas as builds. 
+Nota-se que as três primeiras camadas permanecem as mesmas, porém na última, existe a necessidade de copiar dois diretórios diferentes. É aí que o Docker não armazena toda a pilha de camadas para cada build para o A e para o B, as camadas que continuarem a mesma, serão baixadas somente 1 vez para ambas as builds.
 
 **Observação:** ao iniciar um container sobre uma imagem, é criado uma layer adicional de leitura/escrita.
 
@@ -373,6 +373,10 @@ Criar tag de uma imagem:
 Subir imagem para o [repositório pessoal do Docker Hub](https://hub.docker.com/u/gabrieldfreitas/) (é necessário estar autenticado `docker login`)
 
 - `docker image push gabrieldfreitas/nginx`
+
+Construir uma imagem a partir de um Dockerfile
+
+- `docker image build -t customnginx .`
 
 ## TODO: reorganizar documentação
 

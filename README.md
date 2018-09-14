@@ -384,7 +384,39 @@ Construir uma imagem a partir de um Dockerfile
 2. Criar o Dockerfile. Construir, Testar, Publicar para o Docker Hub, Apagar local, Rodar novamente.
 3. Utilizar versão oficial do Alpine para o `node` 6.x image
 
-## TODO: reorganizar documentação
+## Tempo de vida de containers e dados persistentes
+
+- Containers são usualmente imutáveis e efêmeros (marcados por ciclos de vida curtos)
+- "Infraestrutura Imutável": design-goal, best-pracctice, só re-deploy, sem alterações
+- Este é o cenário ideal, porém, o que acontece com as bases de dados? ou dados únicos?
+- O Docker possui características para garantir esta "separação de interesses"
+- É conhecido como "Persistent Data"
+- Duas formas: Volumes e Bind Mounts
+  - Volumes: criam um local especial fora do sistema de arquivos do container (Unix File System)
+  - Bind mounts: vincula diretórios do container à diretórios do host
+
+Exibir e limpar volumes utilizados ou não mais por containers
+
+- `docker volume ls`
+- `docker volume prune`
+
+Definir um nome para o volume através do comando run:
+
+- `docker container run -d --name mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=true -v mysql-db:/var/lib/mysql mysql`
+
+**Importante:** por padrão o Docker cria os volumes com hashes e mesmo após parar e remover os containers os volumes ficam armazenados, ficando difícil de identificar, caso seja necessário, a qual container aquele volume pertenceu.
+
+Criar volumes manualmente (permite utilizar drivers e labels customizados)
+
+- `docker volume create`
+
+Definir um bind mounting (só é permitido através do comando `container run`, não é permitido através do Dockerfile):
+
+- `docker container run -d --name nginx -p 80:80 -v ${pwd}:/usr/share/nginx/html nginx`
+
+**Observação:** a palavrachave ${pwd} (print current directory) no windows 10 só funciona através do powershell.
+
+<!-- ## TODO: reorganizar documentação
 
 Rodar um container com o tipo de rede **Network None**:
 
@@ -458,7 +490,7 @@ Criando uma rede com base em um driver que já existe: `docker network create --
 - `\c email_sender` -- conectar ao banco email_sender
 - `\d emails` -- gere uma descrição da tabela para validar que o script `init.sql` foi executado corretamente
 - `docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'` executar select em uma tabela de um banco de dados
-- `docker-compose up -d --scale worker=3` escalando serviço com build customizada e escalando com 3 containers
+- `docker-compose up -d --scale worker=3` escalando serviço com build customizada e escalando com 3 containers -->
 
 ## Referências
 

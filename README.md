@@ -416,6 +416,36 @@ Definir um bind mounting (só é permitido através do comando `container run`, 
 
 **Observação:** a palavrachave ${pwd} (print current directory) no windows 10 só funciona através do powershell.
 
+Exercício Named Volumes:
+
+- Upgrade de database com containers;
+- Criar um container do `postgres` com um volume nomeado psql-data usando a versão `9.6.1`;
+- Utilizar o Docker Hub para conhecer onde o path do volume é criado por padrão e as versões que serão utilizadas;
+- Verificar logs e parar o container
+- Criar um novo container do `postgres` com o mesmo volume nomeado utilizado anterior porém com a versão `9.6.2` do postgres;
+- Verificar logs para validar
+
+**Importante:** este upgrade só irá funcionar corretamente entre versões patch (MAJOR.MINOR.PATCH), a maioria dos bancos de dados SQLs requerem comandos manuais para migrarem versões minor/major (limitação de banco de dados)
+
+Resolução:
+
+- `docker container run -d --name psql -v psql:/var/lib/postgresql/data postgres:9.6.1`
+- `docker container logs psql -f`
+- `docker volume ls`
+- `docker container run -d --name psql2 -v psql:/var/lib/postgresql/data postgres:9.6.2`
+- verificou-se que todo o processo de criação do banco não foi necessário, pois estava utilizando um volume que já havia feito isso. upgrade ok!
+
+Exercício Bind Mounts:
+
+- Usar Jekyll "Static Site Generator" para inicializar um local web server;
+- Não necessáriamente precisa ser um desenvolvedor web: este exemplo é uma ponte entre acesso à arquivo local e aplicativos rodando em containers;
+- código fonte está em `bindmount-sample-1`
+- editar arquivos no computador host usando ferramentas como vscode;
+- o container detecta estas alterações nos arquivos do host e atualiza o web server;
+- utilizar imagem do bretfisher para servir jekyll: `docker run -p 80:4000 -v ${pwd}:/site bretfisher/jekyll-serve`;
+- atualizar o navegador e verificar alterações;
+- criar novos arquivos em `_posts/` e verificar alterações no site;
+
 <!-- ## TODO: reorganizar documentação
 
 Rodar um container com o tipo de rede **Network None**:

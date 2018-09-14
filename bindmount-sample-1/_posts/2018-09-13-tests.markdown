@@ -1,0 +1,26 @@
+---
+layout: post
+title:  "Hello World!"
+date:   2018-09-13 23:56:00 +0000
+categories: jekyll update
+---
+Hello World!
+
+Verifique um snippet aleatório de gulp e angularjs:
+
+{% highlight javascript %}
+gulp.task('app.js', () => {
+   return gulp.src('app/**/*.js')
+      .pipe(sourcemaps.init(/* {identityMap: true, loadMaps:true} */))
+            .pipe(babel({ presets: ['env'] }))
+            .pipe(angularFileSorter())
+            .pipe(uglify())
+            .pipe(concat('app.min.js'))
+      .pipe(sourcemaps.write())
+      .pipe(gulp.dest('public/assets/js'))
+})
+{% endhighlight %}
+
+Ele foi retirado [task de build stack-mean][stack-mean-build].
+
+[stack-mean-build]: https://github.com/gdfreitas/stack-mean/blob/master/frontend/build/app.js

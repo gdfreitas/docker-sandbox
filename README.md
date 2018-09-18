@@ -501,6 +501,8 @@ Exercício Bind Mounts:
 
 - `docker service rm SERVICE_NAME` Remove o service e posteriormente os containers relacionados são removidos
 
+- `docker node ls` Exibe lista dos nodes e quem é o Líder
+- `docker node update --role manager node2`  Atualiza role do node2 para manager
 
 <!-- ## TODO: reorganizar documentação
 
@@ -582,6 +584,7 @@ Criando uma rede com base em um driver que já existe: `docker network create --
 
 - [Docker Mastery: The Complete Toolset From a Docker Captain](https://www.udemy.com/docker-mastery)
 - [Docker | Docs - Networking Overview](https://docs.docker.com/network/)
+- [Play with Docker](https://labs.play-with-docker.com/)
 - [Cloud Native Landscape](https://landscape.cncf.io/)
 - [Curso Docker - Cod3r](https://www.udemy.com/curso-docker/)
 - [Docker Documentation](https://docs.docker.com/)

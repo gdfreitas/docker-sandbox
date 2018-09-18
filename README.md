@@ -468,15 +468,8 @@ Exercício Bind Mounts:
 - Os comandos mais utilizados são:
   - `docker compose up` configura volumes/redes e inicaliza todos os containers
   - `docker compose down` para todos os containers e remove containers/volumes/redes
+- Permite adicionar configuração de build da imagem;
 
-Exerício Docker Compose
-
-- Construir um arquivo de compose um app de gerenciamento de conteúdo utilizando a imagem do `drupal`;
-- A imagem do Drupal necessita do `postgress` rodando para base de dados;
-- Utilizar `ports` para expor o drupal na 8080;
-- Definir um password através da variável `POSTGRES_PASSWORD`
-- Utilizar o setup do Drupal via navegador;
-- Dica: o drupal assume o banco de dados como localhost, mas deverá ser utilizado o nome do service;
 
 <!-- ## TODO: reorganizar documentação
 

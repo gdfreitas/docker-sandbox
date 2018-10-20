@@ -588,4 +588,5 @@ docker swarm init
 - [Play with Docker](https://labs.play-with-docker.com/)
 - [Cloud Native Landscape](https://landscape.cncf.io/)
 - [Curso Docker - Cod3r](https://www.udemy.com/curso-docker/)
+- [Docker Extension - Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=PeterJausovec.vscode-docker)
 - [The Moby Project](https://github.com/moby/moby)

@@ -460,11 +460,7 @@ Construir uma imagem a partir de um Dockerfile
 docker image build -t customnginx .
 ```
 
-### Docker Image - Exercício 1 (`./dockerfile-assingment-1/Dockerfile`)
-
-1. Dockerizar uma aplicação existente em Node.js
-2. Criar o Dockerfile. Construir, Testar, Publicar para o Docker Hub, Apagar local, Rodar novamente.
-3. Utilizar versão oficial do Alpine para o `node` 6.x image
+[Docker Image - Exercício 1](image-assignment-1/image_assingment_1.md)
 
 ## Tempo de vida de containers e dados persistentes
 
@@ -668,6 +664,7 @@ Criando uma rede com base em um driver que já existe: `docker network create --
 - [Docker Mastery: The Complete Toolset From a Docker Captain](https://www.udemy.com/docker-mastery)
 - [Docker Mastery: Github Repository](https://github.com/bretfisher/udemy-docker-mastery)
 - [Docker | Docs - Networking Overview](https://docs.docker.com/network/)
+- [Node.js Docker Good Defaults - BretFisher @ Github](https://github.com/BretFisher/node-docker-good-defaults)
 - [Play with Docker](https://labs.play-with-docker.com/)
 - [Cloud Native Landscape](https://landscape.cncf.io/)
 - [Curso Docker - Cod3r](https://www.udemy.com/curso-docker/)

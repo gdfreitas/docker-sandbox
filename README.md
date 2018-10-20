@@ -205,7 +205,7 @@ Baixar imagem e inicializar container interativo, visualizando os processos atra
 docker run -it --rm --privileged --pid=host justincormack/nsenter1
 ```
 
-### **O que realmente acontece quando executado o comando `docker container run`**
+### O que realmente acontece quando executado o comando `docker container run`
 
 1. O docker procura pela imagem localmente no computador em um repositório chamado de "image cache".
 2. Se não encontrar, busca no repositório remoto (por padrão é o Docker Hub)
@@ -221,47 +221,73 @@ docker run -it --rm --privileged --pid=host justincormack/nsenter1
 
 Listar os processos de um container específico:
 
-- `docker container top CONTAINER_NAME`
+```docker
+docker container top CONTAINER_NAME
+```
 
 Inspecionar informações (metadados: startup, config, volumes, networking, etc) de um container específico:
 
-- `docker container inspect CONTAINER_NAME`
+```docker
+docker container inspect CONTAINER_NAME
+```
 
 Obter estatísticas de performance de todos os containers
 
-- `docker container stats`
+```docker
+docker container stats
+```
 
-### Shell
+### Container Shell
 
-#### O comando `run`
+#### O comando *run*
 
 Inicializar um novo container no modo interativo
 
-- `docker container run -it`
+```docker
+docker container run -it
+```
 
 Executar comandos adicionais em um container existente
 
-- `docker container exec -it`
+```docker
+docker container exec -it
+```
 
-Exemplo 1: `docker container run -it --name proxy nginx bash`
+Exemplo 1:
 
-**Importante:** no Exemplo 1 acima foi sobrescrito o comando inicial da imagem do nginx para executar o `bash` para podermos listar os arquivos que estão dentro do container no modo interativo. Entretanto, ao sair do bash, o container exitou, Por quê? Isso ocorre devido ao ciclo de vida dos containers serem baseados no ciclo de vida do comando que o inicializa.
+```docker
+docker container run -it --name proxy nginx bash
+```
 
-Exemplo 2: `docker container run -it ubuntu`
+**Importante:** no acima foi sobrescrito o comando inicial da imagem do nginx para executar o `bash` para podermos listar os arquivos que estão dentro do container no modo interativo. Entretanto, ao sair do bash, o container exitou, Por quê? Isso ocorre devido ao ciclo de vida dos containers serem baseados no ciclo de vida do comando que o inicializa.
+
+Exemplo 2:
+
+```docker
+docker container run -it ubuntu
+```
 
 A imagem do ubuntu já tem por padrão no seu comando de inicialização o `bash`, após exitar o container é exitado também. Vale ressaltar que, para inicializar este container novamente não é com a flag `-it`, e sim com `-ai`, exemplo: `docker container start -ai ubuntu`
 
-#### O comando `exec`
+#### O comando _exec_
 
-Com este comando é possível executar um comando e inicializar um outro processo dentro de um container específico, e contráriando o `run` não afeta o processo root/ciclo de vida do container.
+Com este comando é possível executar um outro comando e inicializar um outro processo dentro de um container específico, e contráriando o `run` não afeta o processo root/ciclo de vida do container.
 
-Exemplo: `docker container exec -it CONTAINER_NAME bash`
+Exemplo:
+
+```docker
+docker container exec -it CONTAINER_NAME bash
+```
 
 #### Alpine
 
 É uma imagem muito pequena do linux (4MB, a do ubuntu é 84MB), que não conta com o `bash` por exemplo. Entretanto possui `sh` e que através dele é possível instalar o `bash` utilizando o comando `apk` que é o package manager desta distribuição. Mais em: [Package Management Basics: apt, uym, dnf, pkg](https://www.digitalocean.com/community/tutorials/package-management-basics-apt-yum-dnf-pkg)
 
-Exemplo: `docker container run -it alpine sh`
+Exemplo:
+
+```docker
+docker container run -it alpine sh
+```
 
 ## Network
 
@@ -286,41 +312,59 @@ Isto permite criar múltiplos containers dentro de uma mesma rede não expondo p
 
 Visualizar as redes disponíveis do Docker:
 
-- `docker network ls`
+```docker
+docker network ls
+```
 
 Visualizar as portas sendo utilizadas em um container específico:
 
-- `docker container port CONTAINER_NAME`
+```docker
+docker container port CONTAINER_NAME
+```
 
 Inspecionar as configurações de rede um container:
 
-- `docker container inspect --format '{{ .NetworkSettings.IPAddress }}' webhost`
+```docker
+docker container inspect --format '{{ .NetworkSettings.IPAddress }}' webhost
+```
 
 **Observação:** o `--format` permite formatar a saída do inspect no padrão da linguagem Go (linguagem em que o Docker é desenvolvido), permitindo neste exemplo acima, acessar o nó do json em que contém as propriedades de Network. Mais em: [Docker's --format option for filtering cli output](https://docs.docker.com/config/formatting/)
 
 Inspecionar uma network
 
-- `docker network inspect`
+```docker
+docker network inspect
+```
 
 Criar uma network
 
-- `docker network create --driver`
+```docker
+docker network create --driver
+```
 
-Exemplo 1: criar uma rede com base no driver padrão `bridge`
+*Exemplo 1:* criar uma rede com base no driver padrão `bridge`
 
-- `docker network create my_app_net`  
+```docker
+docker network create my_app_net
+```
 
-Exemplo 2: criar um container com uma configuração de rede específica
+*Exemplo 2:* criar um container com uma configuração de rede específica
 
-- `docker container run -d --name new_nginx --network my_app_net nginx`
+```docker
+docker container run -d --name new_nginx --network my_app_net nginx
+```
 
 Vincular/desvincular uma network à um container
 
-- `docker network connect/disconnect`
+```docker
+docker network connect/disconnect
+```
 
-Exemplo 1: vinculando uma rede à um container (Observação: é possível ter um container trabalhando com mais de uma rede)
+*Exemplo 3:* vinculando uma rede à um container (Observação: é possível ter um container trabalhando com mais de uma rede)
 
-- `docker network connect NETWORK_ID CONTAINER_ID`
+```docker
+docker network connect NETWORK_ID CONTAINER_ID
+```
 
 ### Docker DNS
 
@@ -328,44 +372,32 @@ A engine do docker possui um "servidor de DNS" integrado que os containers utili
 
 **Observação:** o docker define por padrão que o nome do host será o nome do container, porém, podemos definir aliases.
 
-Exemplo: criar 02 containers em uma mesma rede a partir da imagem do `nginx` e executar um ping entre eles utilizando o nome do container como hostname.
+- _Criar 02 containers em uma mesma rede a partir da imagem do `nginx` e executar um ping entre eles utilizando o nome do container como hostname._
 
 Criar dois container na mesma rede:
 
-- `docker container run -d --name my_nginx --network my_app_net nginx`
-- `docker container run -d --name new_nginx --network my_app_net nginx`
+```docker
+docker container run -d --name my_nginx --network my_app_net nginx
+docker container run -d --name new_nginx --network my_app_net nginx
+```
 
 Como a imagem do nginx não vem mais com o comando ping, temos que instalar um dentro do container:
 
-- Executar o bash modo interativo `docker container exec -it my_nginx bash`
-- bash@root: `apt-get update && apt-get install -y iputils-ping`
+- Executar o bash do container em modo interativo
+
+```docker
+docker container exec -it my_nginx bash
+apt-get update && apt-get install -y iputils-ping
+```
 
 Verificar o ping utilizando nome dos containers
 
-- `docker container exec -it my_nginx ping new_nginx`
+```docker
+docker container exec -it my_nginx ping new_nginx
+```
 
-### Exercício Rede 1
-
-Utilizar containers para testar a ferramenta `curl` em diferentes ditribuições do linux. Utilizar dois terminais para inicializar o bash no `centos:7` e `ubuntu:14.04` utilizando modo `-it`. Utilizar `--rm` na criação do container para que o mesmo quando finalizar seu ciclo de vida seja deletado. Garantir que `curl` está instalado na última versão para cada distro: `ubuntu`: `apt-get update && apt-get install curl` e `centos`: `yum update curl` e verificar a versão `curl version`.
-
-1. `docker container run --rm --name centos -it centos:7 bash`
-  bash@root: `yum update curl`
-  bash@root: `curl --version` ==> 7.29.0
-2. `docker container run --rm --name ubuntu -it ubuntu:14.04 bash`
-  bash@root: `apt-get update && apt-get install curl`
-  bash@root: `curl --version` ==> 7.35.0
-
-### Exercício Rede 2
-
-Aplicar o mecanismo de Round Robin utilizando Docker ao criar múltiplos containers que respondem à mesma rede. Criar 2 containers da imagem `elasticsearch:2`. Utilizar o comando `--net-alias search` quando estiver criando para adicioná-los ao mesmo nome de DNS (lembrando que por padrão o Docker os coloca em uma rede do mesmo nome do container). Executar a `alpine nslookup search` com o `--net` para verificar os dois containers com o mesmo nome de DNS. Executar `centos curl -s search:9200` com `--net` múltiplas vezes até que o campo "name" seja exibido duas vez seguidas o mesmo. Ao fazer a requisição para o elastic search, ele devolve um json com uma propriedade "name" que é um nome aleatório gerado para cada instância do mesmo, semelhante à maneira que o Docker faz com o nome de containers. Efetuar as múltiplas requisições para verificar o balanceamento entre os 2 containers criados.
-
-> Round Robin é um mecanismo de equilíbrio local de carga, usado pelos servidores DNS  para compartilhar e distribuir cargas entre dois ou mais servidores da rede. Entenda-se por carga de trabalho no servidor DNS, os pedidos para resolução de nomes, enviados através de consulta dos diversos clientes da rede (estações de trabalho e outros equipamentos ligados na rede). Por exemplo, pode ser utilizado para distribuir os acessos a um site de elevado volume de acessos entre dois ou mais servidores Web, os quais que contém exatamente o mesmo conteúdo. Em resumo, usando o Round robin, a um único nome DNS são associados dois ou mais endereços IP. A medida que as requisições vão chegando, o servidor DNS responde cada consulta com um dos endereços IP e depois faz uma reordenação da lista de endereços, para que na próxima requisição, um endereço IP diferente seja o primeiro da lista. Isso proporciona uma distribuição igualitária de carga entre os diversos servidores. [Júlio Battisti - Tutorial de TCP/IP](https://juliobattisti.com.br/artigos/windows/tcpip_p30.asp)
-
-1. Criar rede: `docker network create dude`
-2. Criar container 1: `docker container run -d --net dude --net-alias search elasticsearch:2`
-3. Criar container 2: `docker container run -d --net dude --net-alias search elasticsearch:2`
-4. Criar container do alpine e executar o dns lookup com nome search `docker container run --rm --net dude alpine nslookup search`
-5. Criar container do centos e executar curl `docker container run --rm --net dude centos curl -s search:9200`
+[Docker Network - Exercício 1](network_assingment_1.md)
+[Docker Network - Exercício 2](network_assingment_2.md)
 
 ## Image [Docker Image Specification v1.0.0](https://github.com/moby/moby/blob/master/image/spec/v1.md)
 
@@ -378,15 +410,21 @@ Aplicar o mecanismo de Round Robin utilizando Docker ao criar múltiplos contain
 
 Listar as imagens que estão no cache local
 
-- `docker image ls`
+```docker
+docker image ls
+```
 
 Baixar uma imagem (irá baixar a tag `latest` que acompanha um hash, caso a mesma já esteja no repositório local como latest, este hash será a garantia de que sejam a mesma, caso contrário baixa novamente)
 
-- `docker image pull nginx`
+```docker
+docker image pull nginx
+```
 
 Exibir histórico de uma imagem imagem, contendo suas camadas:
 
-- `docker history nginx`
+```docker
+docker history nginx
+```
 
 **Observação:** a técnica de aplicar alterações em imagens através de camadas (_layers_) diminui consideravelmente o tamanho entre essas imagens porque, como é possível identificar através do comando anterior, só irá ser considerado alterações em mesma camada, as outras camadas caso não sejam alteradas continuarão com o mesmo SHA1 hash e não serão duplicadas e não será necessário efetuar o download/upload mais de uma vez.
 
@@ -400,21 +438,29 @@ Nota-se que as três primeiras camadas permanecem as mesmas, porém na última, 
 
 Inspecionar uma imagem permite verificar suas configurações, portas, comandos, variáveis de ambientes, autor, arquitetura, id, etc.
 
-- `docker image inspect nginx`
+```docker
+docker image inspect nginx
+```
 
 Criar tag de uma imagem:
 
-- `docker image tag nginx gabrieldfreitas/nginx`
+```docker
+docker image tag nginx gabrieldfreitas/nginx
+```
 
 Subir imagem para o [repositório pessoal do Docker Hub](https://hub.docker.com/u/gabrieldfreitas/) (é necessário estar autenticado `docker login`)
 
-- `docker image push gabrieldfreitas/nginx`
+```docker
+docker image push gabrieldfreitas/nginx
+```
 
 Construir uma imagem a partir de um Dockerfile
 
-- `docker image build -t customnginx .`
+```docker
+docker image build -t customnginx .
+```
 
-### Exercício Imagem 1 (`./dockerfile-assingment-1`)
+### Docker Image - Exercício 1 (`./dockerfile-assingment-1/Dockerfile`)
 
 1. Dockerizar uma aplicação existente em Node.js
 2. Criar o Dockerfile. Construir, Testar, Publicar para o Docker Hub, Apagar local, Rodar novamente.

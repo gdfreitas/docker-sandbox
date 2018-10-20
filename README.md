@@ -1,6 +1,6 @@
 # Docker
 
-Repositório destinado à conceitos e exemplos com Docker
+Repositório destinado à conceitos e práticas com Docker
 
 ## O que é Docker
 
@@ -10,7 +10,7 @@ Repositório destinado à conceitos e exemplos com Docker
 
 O docker foi lançado em 2013 como um projeto open-source por uma empresa chamada .cloud (dot cloud) que era uma empresa de hospedagem que atualmente não existe mais. Após um ano do lançamento o Docker se tornou tão grande que eles fecharam a antiga empresa e abriram uma nova chamada Docker Inc.
 
-### Por que Docker? Por que não utilizar uma VM (Virtual Machine)?
+### Docker _vs_ Virtual Machine
 
 - Rapidez, agilidade _"Docker is all about speed"_
   - para desenvolver, para construir, testar, lançar, atualizar e recuperar.
@@ -45,12 +45,12 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 
 ## Container
 
-- *Definição:* é uma instância de uma _imagem_ rodando como processo;
+- **Definição:** é uma instância de uma _imagem_ executando como processo.
 
 ### Características de containers
 
-- É possível ter inúmeros contâiners rodando a partir da mesma imagem;
-- Containers são somente processos rodando na máquina host, limitados aos recursos que podem acessar, acabam quando o processo para.
+- É possível ter inúmeros contâiners executando a partir da mesma imagem;
+- Containers são somente processos executando na máquina host, limitados aos recursos que podem acessar, acabam quando o processo para.
 - Possui uma **segregação de processos** no mesmo Kernel (isolamento);
   - A partir de um processo, permite criar subprocessos isolados da máquina host;
 - Possui um **sistema de arquivos** criados a partir de uma imagem docker;
@@ -62,7 +62,7 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 
 ## Imagem
 
-- *Definição:* é um composto com os binários, códigos-fontes, bibliotecas, etc que compõe uma aplicação;
+- **Definição:** é um composto com os binários, códigos-fontes, bibliotecas, etc que compõe uma aplicação;
 
 ### Características imagens
 
@@ -78,84 +78,134 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 - O grande objetivo dessa estratégia de dividir uma imagem em camadas é o reuso;
 - É possível compor imagens a partir de camadas de outras imagens;
 
+___
+
 ## Hands-on
 
 Exibir um resumo dos comandos disponíveis e uma breve descrição para cada  
 
-- `docker`
+```docker
+docker
+```
 
 Exibir a versão do client (cli: linha de comando) e do server (Engine: no windows é chamado de serviço, no mac/linux é chamado de daemon):
 
-- `docker version`
+```docker
+docker version
+```
 
 Exibir todas as configurações da engine do docker:
 
-- `docker info`
+```docker
+docker info
+```
 
 Hello World! no Docker:
 
-- `docker container run hello-world` irá baixar esta imagem do Docker Hub e irá imprimir uma mensagem de "Hello World" no log do container.
+```docker
+docker container run hello-world
+```
 
-- `docker container run --publish 80:80 nginx`
-  - baixa a última versão da imagem do `nginx` do Docker Hub
-  - cria um container com esta imagem em um novo processo
-  - `--publish 80:80` publica/expõe a porta 80 do computador host na porta 80 interna do container, direcionando todo tráfego do localhost para o container. Pode ser utilizada a abreviação `-p 80:80`. Sequência: `<PORTA_HOST:PORTA_CONTAINER>`
-- `docker container run -p 80:80 --detach nginx`
-  - `--detach` permite a execução do container em background, liberando a linha de comando. Pode ser utilizada a abreviação `-d`
+- Irá baixar esta imagem do Docker Hub e irá imprimir uma mensagem de "Hello World" no log do container.
+
+Executando imagem do _nginx_
+
+```docker
+docker container run --publish 80:80 nginx
+```
+
+1. Baixa a última versão da imagem do `nginx` do Docker Hub
+2. Cria um container com esta imagem em um novo processo.
+3. A flag `--publish PORTA_HOST:PORTA_CONTAINER` expõe a porta 80 do computador host na porta 80 interna do container, direcionando todo tráfego do localhost para o container. Pode ser utilizada a abreviação `-p`
+
+Execução em background:
+
+```docker
+docker container run -p 80:80 --detach nginx
+```
+
+- `--detach` permite a execução do container em background, liberando a linha de comando. Pode ser utilizada a abreviação `-d`
 
 Iniciar, parar, reiniciar um container:
 
-- `docker container start/stop/restart CONTAINER NAME or ID`
+```docker
+docker container start/stop/restart CONTAINER_NAME or ID
+```
 
 **Observação** É necessário somente os 3 primeiros dígitos do id para ser único e docker conseguir identificar qual container está sendo referenciado.
 
-Exibir lista dos containers/images/volumes/networks:
+Comandos genéricos para listar containers/images/volumes/networks:
 
-- `docker container ls`, `docker container ps`, `docker container list`
+```docker
+docker container ls
+docker container ps
+docker container list
+```
+
 - Por padrão lista somente containers rodando, com a flag `-a` lista histórico de containers criados.
 - Em adição a flag anterior se colocado `q` irá listar somente os ids dos containers.
 
-Consultando os logs de um container específico:
+Consultando os logs de um container:
 
-- `docker container logs CONTAINER_NAME` (pode ser utilizado as `-f` para seguir automaticamente o log, e `-t` para exibir timestamp nas mensagens)
+```docker
+docker container logs CONTAINER_NAME
+```
+
+- pode ser utilizado a `-f` para seguir automaticamente o log, e `-t` para exibir timestamp nas mensagens
 
 Consultar os processos rodando em um container específico:
 
-- `docker container top CONTAINER_NAME`
+```docker
+docker container top CONTAINER_NAME
+```
 
 **Atenção!**
 
-- `docker container run ID` sempre cria um novo container;
-- `docker container start ID` inicializa um container que já existe e que foi parado;
+```docker
+docker container run IMAGE
+docker container start ID
+```
 
-**Observação**: O nome de um container deve ser sempre único, e se não especifícarmos na criação, o docker cria automaticamente um nome aleatório para o container com base em uma lista open-source de nomes e sobrenomes de hackers e cientistas famosos.
+- `run` sempre cria um novo container.
+- `start` inicializa um container que já existe e que foi parado.
+
+**Curiosidade**: O nome de um container deve ser sempre único, e se não especifícarmos na criação, o docker cria automaticamente um nome aleatório para o container com base em uma lista open-source de nomes e sobrenomes de hackers e cientistas famosos.
 
 Especificando um nome para o container:
 
-- `docker container run --publish 80:80 --detach --name CONTAINER_NAME nginx`
+```docker
+docker container run --publish 80:80 --detach --name CONTAINER_NAME nginx
+```
 
 Definindo variáveis de ambiente:
 
-- `-e` ou `-env`
-  - Exemplo: `-env MYSQL_RANDOM_ROOT_PASSWORD=yes`
+```docker
+docker run --name mysqldb -e MYSQL_ROOT_PASSWORD=123456 -d mysql
+docker run --name mysqldb -e MYSQL_RANDOM_ROOT_PASSWORD=yes -d mysql
+```
+
+- `-e` ou `-env` pode ser utilizada para definir variáveis de ambientes para a imagem do container.
 
 Remover os containers criados:
 
-- `docker container rm IDs...`
+```docker
+docker container rm CONTAINER_ID
+docker container rm $(docker container ls -aq)
+```
 
-- `docker container rm $(docker container ls -aq)`
-
-**Dica:** como visto no segundo exemplo, é permitido executar outros comandos como por exemplo listar todos os ids de containers criados e utiliza-los como argumentos de um comando.
+**Dica:** como visto no segundo exemplo, é permitido executar outros comandos como por exemplo listar todos os ids de containers criados e utiliza-los como argumentos na execução de outro comando.
 
 **Observação:** o docker nào permite remover containers que estão ativos como medida de segurança, logo é preciso parar o container para posteriormente remove-lo. Entretanto, o comando `docker container rm` permite a flag `-f` para forçar a remoção dos containers, o que permite remover containers que estão rodando.
 
-### Windows 10 - Como visualizar os processos que estão rodando no computador host (Moby VM)
+### Visualizando os processos que estão rodando no computador host (Moby VM)
 
-- Baixar imagem e inicializar container interativo `docker run -it --rm --privileged --pid=host justincormack/nsenter1`
-- Visualizar os processos que estão rodando `ps aux`
-  - Filtrar a saída por um termo específico `ps aux | grep mongo`
+Baixar imagem e inicializar container interativo, visualizando os processos através de `ps aux` ou filtrando por uma saída específica `ps aux | grep mongo`
 
-### O que realmente acontece quando executado o comando `docker container run`
+```docker
+docker run -it --rm --privileged --pid=host justincormack/nsenter1
+```
+
+### **O que realmente acontece quando executado o comando `docker container run`**
 
 1. O docker procura pela imagem localmente no computador em um repositório chamado de "image cache".
 2. Se não encontrar, busca no repositório remoto (por padrão é o Docker Hub)
@@ -165,21 +215,7 @@ Remover os containers criados:
 6. Quando específicado uma publicação (`--publish PORT:PORT`) expoe a porta na máquina host e direciona todo tráfego para a porta de dentro do container.
 7. Inicializa o container usando o comando ("CMD") no Dockerfile da imagem.
 
-### Exercício 1
-
-Rodar três containers: `nginx` na porta 80:80, `mysql` 3306:3306, `httpd` 8080:80, todos em modo detach e nomeados apropriadamente.
-
-Ao criar o container do `mysql` deve ser usado a opção `--env` ou `-e` para passar a variável de ambiente `MYSQL_RANDOM_ROOT_PASSOWORD=yes`
-
-Usar o `docker container logs` no container do mysql para achar a senha aleatória que foi gerada na inicialização.
-
-**Resolução:**
-
-Lembrando: `-d` = `--detach`, `-p` = `--publish`, `-e` = `--env`
-
-- `docker container run -d --name db -p 3306:3306  -e MYSQL_RANDOM_ROOT_PASSWORD=yes mysql`
-- `docker container run -d --name webserver -p 8080:80 httpd`
-- `docker container run -d --name proxy -p 80:80 nginx`
+[Docker Containers - Exercício 1](container_assignment_1.md)
 
 ### Monitoramento de containers
 
@@ -582,11 +618,11 @@ Criando uma rede com base em um driver que já existe: `docker network create --
 
 ## Referências
 
+- [Docker Documentation - Get Started](https://docs.docker.com/get-started/)
 - [Docker Mastery: The Complete Toolset From a Docker Captain](https://www.udemy.com/docker-mastery)
 - [Docker Mastery: Github Repository](https://github.com/bretfisher/udemy-docker-mastery)
 - [Docker | Docs - Networking Overview](https://docs.docker.com/network/)
 - [Play with Docker](https://labs.play-with-docker.com/)
 - [Cloud Native Landscape](https://landscape.cncf.io/)
 - [Curso Docker - Cod3r](https://www.udemy.com/curso-docker/)
-- [Docker Documentation](https://docs.docker.com/)
 - [The Moby Project](https://github.com/moby/moby)

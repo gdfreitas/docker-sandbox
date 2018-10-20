@@ -8,7 +8,11 @@ RUN useradd www && \
 
 USER www
 VOLUME /log
+
 WORKDIR /app
+
+COPY "run.py" .
+
 EXPOSE 8000
 
 ENTRYPOINT [ "/usr/local/bin/python" ]

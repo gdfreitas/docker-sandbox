@@ -215,7 +215,7 @@ docker run -it --rm --privileged --pid=host justincormack/nsenter1
 6. Quando específicado uma publicação (`--publish PORT:PORT`) expoe a porta na máquina host e direciona todo tráfego para a porta de dentro do container.
 7. Inicializa o container usando o comando ("CMD") no Dockerfile da imagem.
 
-[Docker Containers - Exercício 1](container_assignment_1.md)
+[Docker Containers - Exercício 1](basics/container_assignment_1.md)
 
 ### Monitoramento de containers
 
@@ -396,8 +396,8 @@ Verificar o ping utilizando nome dos containers
 docker container exec -it my_nginx ping new_nginx
 ```
 
-[Docker Network - Exercício 1](network_assingment_1.md)
-[Docker Network - Exercício 2](network_assingment_2.md)
+[Docker Network - Exercício 1](basics/network_assignment_1.md)
+[Docker Network - Exercício 2](basics/network_assignment_2.md)
 
 ## Image [Docker Image Specification v1.0.0](https://github.com/moby/moby/blob/master/image/spec/v1.md)
 
@@ -460,7 +460,13 @@ Construir uma imagem a partir de um Dockerfile
 docker image build -t customnginx .
 ```
 
-[Docker Image - Exercício 1](image-assignment-1/image_assingment_1.md)
+Construir uma imagem passando argumentos:
+
+```docker
+docker image build --build-arg S3_BUCKET=myapp -t custom-image-args .
+```
+
+[Docker Image - Exercício 1](basics/image-assignment-1/image_assingment_1.md)
 
 ## Tempo de vida de containers e dados persistentes
 
@@ -506,8 +512,8 @@ docker container run -d --name nginx -p 80:80 -v ${pwd}:/usr/share/nginx/html ng
 
 **Observação:** a palavra chave `${pwd}` (print current directory) no windows 10 só funciona através do powershell.
 
-[Docker Volumes - Exercício 1](volumes_assingment_1.md)
-[Docker Volumes - Exercício 2](volumes_assingment_2/volumes_assingment_2.md)
+[Docker Volumes - Exercício 1](basics/volumes_assingment_1.md)
+[Docker Volumes - Exercício 2](basics/volumes-assingment-2/volumes_assingment_2.md)
 
 ## Docker Compose [docs](https://docs.docker.com/compose/compose-file/#dockerfile)
 
@@ -527,7 +533,7 @@ docker container run -d --name nginx -p 80:80 -v ${pwd}:/usr/share/nginx/html ng
 
 ### `docker-compose`
 
-- Não é uma ferramenta para produção, é utilizada somente em ambientes dev e test;
+- **Não é uma ferramenta para produção**, é utilizada somente em ambientes dev e test;
 - Os comandos mais utilizados são:
   - `docker compose up` configura volumes/redes e inicaliza todos os containers
   - `docker compose down` para todos os containers e remove containers/volumes/redes
@@ -552,7 +558,12 @@ docker container run -d --name nginx -p 80:80 -v ${pwd}:/usr/share/nginx/html ng
 
 ### Comandos
 
-- `docker swarm init` Por padrão swarm não vem habilitado com o Docker
+Por padrão swarm não vem habilitado com o Docker, deve ser ativado.
+
+```docker
+docker swarm init
+```
+
 - `docker node ls`
 
 - `docker service ls` Exibe lista dos services com quantidade de replicas
@@ -566,82 +577,6 @@ docker container run -d --name nginx -p 80:80 -v ${pwd}:/usr/share/nginx/html ng
 
 - `docker node ls` Exibe lista dos nodes e quem é o Líder
 - `docker node update --role manager node2`  Atualiza role do node2 para manager
-
-<!-- ## TODO: reorganizar documentação
-
-Rodar um container com o tipo de rede **Network None**:
-
-- `docker container run -d --net none debian`
-
-Rodar um container com com a imagem alpine e verificar interfaces de rede com o comando ifconfig:
-
-- modo bridge: `docker container run --rm alpine ash -c "ifconfig"`
-- modo none: `docker container run --rm --net none alpine ash -c "ifconfig"`
-
-Inspecionar uma rede do docker: `docker network inspect bridge`
-
-Criando 2 containers para testar ping entre eles:
-
-- `docker container run -d --name container1 alpine sleep 1000`  
-- `docker container exec -it container2 ping 172.17.0.2`
-
-Criando uma rede com base em um driver que já existe: `docker network create --driver bridge rede_nova`
-
-- exibir o sistema que está sendo executado dentro do container: `docker container exec daemon-basic uname -or`
-
-- remover container/image/network: `docker container rm CONTAINER_ID`
-
-- facilitador para parar todos os containers `docker container stop $(docker container ls -aq)`
-- facilitador para remover todos os containers `docker container rm $(docker container ls -aq)`
-
-- facilitador para remover todas as imagens `docker image rm $(docker image -q)`
-
-- executa o container e o remove automaticamente quando seu processo for parado
-
-- executa o container com duas flags, `i` significa modo interativo, e `t` permite acesso ao terminal do container. `docker container run -it debian bash`  
-
-- cria um container nomeando conforme parâmetro, nomes únicos. `docker container run --name MEU_CONTAINER -it debian bash`  
-
-- inicializa um container, reaproveitando o que já foi gerado `docker container start -ai MEU_CONTAINER`  
-
-- porta externa seria a porta que seria exposta pelo container, e a porta interna que o serviço vai ser inicializado `docker container run -p PORTA_EXTERNA:PORTA_INTERNA NOME_IMAGEM`  
-  - Ex: `docker container run -p 8080:80 nginx`
-
-- mapear volume `docker container run -p PORTA_EXTERNA:PORTA_INTERNA -v DIRETORIO_MAQUINA_HOST:DIRETORIO_CONTAINER IMAGEM`  
-  - Ex: `docker container run -p 8080:80 -v D:/dev/git/docker/volume/html:/usr/share/nginx/html nginx`
-
-- rodar container em modo Daemon (background, sem interatividade direta ao executar) `docker container run -d --name daemon-basic -p 8080:80 -v D:/dev/git/docker/volume/html:/usr/share/nginx/html nginx`
-
-- construir uma imagem (conforme Dockerfile) `docker image build -t NOME_IMAGEM DIRETORIO_IMAGEM`
-  - Ex: `docker image build -t custom-image-build .`
-
-- construir uma imagem passando argumentos `docker image build --build-arg S3_BUCKET=myapp -t custom-image-args .`
-  - subir um container com esta imagem e dar um echo no argumento `docker container run custom-image-args bash -c 'echo $S3_BUCKET'`
-
-- utilizar filtro no comando docker image inspect `docker image inspect --format="{{index .Config.Labels \"maintainer\"}}" custom-image-args`
-
-- login: `docker login --username=USUARIO` e então digitar a senha;
-
-- fazer o push da imagem para o repositório (hub.docker): `docker image push gabrieldfreitas/custom-hello-world:1.0`
-
-## Docker Compose
-
-### Comandos Docker Compose
-
-- subir/baixar os serviços do docker-compose `docker-compose up/down` flags: `-d` para rodar em modo daemon
-- `docker-compose logs -f -t` acompanhar os logs do compose
-- visualizar os processos rodando `docker-compose ps`
-- rodar comando psql dentro de um serviço de uma instância que está ativa chamado **db**
-  - `docker-compose exec db psql -U postgres -c '\l'`
-    - `-U USUARIO` informa o usuário que executará o comando. No caso o usuário é o padrão `postgres`
-    - `-c COMANDO` comando que será executado. No caso `'\l'` lista os bancos de dados
-  - `docker-compose exec db psql -U postgres -f /scripts/check.sql` executa um arquivo dentro da instância do docker
-- abrir o bash dentro de um container `docker exec -it COTAINER_NAME bash`
-- `\l` -- lista todos os bancos de dados
-- `\c email_sender` -- conectar ao banco email_sender
-- `\d emails` -- gere uma descrição da tabela para validar que o script `init.sql` foi executado corretamente
-- `docker-compose exec db psql -U postgres -d email_sender -c 'select * from emails'` executar select em uma tabela de um banco de dados
-- `docker-compose up -d --scale worker=3` escalando serviço com build customizada e escalando com 3 containers -->
 
 ## Referências
 

@@ -531,12 +531,15 @@ docker container run -d --name nginx -p 80:80 -v ${pwd}:/usr/share/nginx/html ng
 - E também pode ser utilizado diretamente com o `docker` em produção com Swarm (v1.13)
 - Por padrão o nome do arquivo é `docker-compose.yml`, porém pode ser nomeado de qualquer maneira é somente utilizar o `-f` no comando para especificar o arquivo que será utilizado.
 
-### `docker-compose`
+### `docker-compose` [reference](https://docs.docker.com/compose/reference/)
 
 - **Não é uma ferramenta para produção**, é utilizada somente em ambientes dev e test;
 - Os comandos mais utilizados são:
   - `docker compose up` configura volumes/redes e inicaliza todos os containers
   - `docker compose down` para todos os containers e remove containers/volumes/redes
+    - `-v`, `--volumes` remove automaticamente todos os *named volumes*
+    - `-t`, `--timeout` permite especificar um tempo de timeout para executar o shutdown _(Default: 10)_
+    - `--rmi all/local` permite remover todas as imagens utilizadas por qualquer serviço / remover somente imagens que não possuem nenhuma tag customizada pelo campo _image_
 - Permite adicionar configuração de build da imagem;
 
 ## Docker Swarm

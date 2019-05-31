@@ -4,44 +4,53 @@ Repositório destinado à conceitos e práticas com Docker
 
 ## O que é Docker
 
-É uma plataforma que permite a criação e execução de aplicações de maneira rápida e prática através de pacotes de software em unidades padronizadas chamadas de contêineres que possuem tudo que o software precisa para ser executado, incluindo bibliotecas, ferramentas de sistema, código e runtime. O docker permite implantar, escalar e mover rapidamente aplicações em qualquer ambiente, otimizando a utilização de recursos.
+É uma plataforma que permite a criação e execução de aplicações de maneira rápida e prática através de pacotes de software em unidades padronizadas chamadas de contêineres os quais possuem tudo que o software precisa para ser executado, incluindo bibliotecas, ferramentas de sistema, código e runtime. O docker permite implantar, escalar e mover rapidamente aplicações em qualquer ambiente, otimizando a utilização de recursos.
 
 ### História
 
-O docker foi lançado em 2013 como um projeto open-source por uma empresa chamada .cloud (dot cloud) que era uma empresa de hospedagem que atualmente não existe mais. Após um ano do lançamento o Docker se tornou tão grande que eles fecharam a antiga empresa e abriram uma nova chamada Docker Inc.
+O docker foi lançado em 2013 como um projeto open-source por uma empresa chamada **.cloud (dot cloud)** que era uma empresa de hospedagem que atualmente não existe mais. Após um ano do lançamento desta tecnologia, ela se tornou tão grande que eles fecharam a antiga empresa e abriram uma nova chamada **Docker Inc**.
 
-### Docker _vs_ Virtual Machine
+### Quais as vantagens do Docker em relação às tradicionais Máquinas Virtuais
 
-- Rapidez, agilidade _"Docker is all about speed"_
-  - para desenvolver, para construir, testar, lançar, atualizar e recuperar.
-- O consumo de recursos é muito menor com o Docker;
-  - Herda o Kernel e entre outros recursos da máquina host;
-- A inicialização de um container levaria 1s, e da máquina virtual com o sistema operacional inteiro, levaria cerca de 1min;
+1. Rapidez, agilidade _"Docker is all about speed"_
+  1.1 Em vários sentidos: para desenvolver, construir, testar, lançar, atualizar e recuperar
+2. O consumo de recursos é muito menor com o Docker
+  2.2 Herda o Kernel e entre outros recursos da máquina host
+3. Supondo que um a inicialização de um container leva 1seg, a mesma operação em uma máquina virtual com o sistema operacional inteiro, levaria cerca de 1min;
 
 ## Principais características
 
 - Não é um sistema de virtualização tradicional (VM - Virtual Machine)
-- É uma engine de administração de containers (ambiente/serviço isolado da maquina host);
+- É uma engine de administração de containers (ambiente/serviço isolado da maquina host)
 - É baseado em uma tecnologia de serviços LXC (Linux Containers);
-- Open Source e escrito em Go (linguagem);
-- Host e container compartilham o Kernel (menor consumo, otimização);
-- Empacota software com vários níveis de isolamento (memória, cpu, rede, etc);
+- Open Source e escrito em Go (linguagem)
+- Host e container compartilham o Kernel (menor consumo, otimização, etc)
+- Empacota software com vários níveis de isolamento (memória, cpu, rede, etc)
 
 ## Docker Editions
 
-- Docker CE (Community Edition) e Docker EE (Enterprise Edition)
-  - Community Edition (free) vs Enterprise Edition (paid)
-    - recomendado para grandes empresas, possui suporte 24/7, produtos extras, certificado em plataformas específicas.
+- Docker CE (Community Edition): é grátis para uso
+- Docker EE (Enterprise Edition): é pago
+  - Recomendado para grandes empresas, possui suporte 24/7, diretivas de seguranças em imagens, certificado em plataformas específicas, entre outros diversos produtos extras.
 
-- Edge vs Stable versionamento
-  - Edge (beta) todo mês é lançado uma nova versão; que virará stable no quarto mês;
+### Versions
 
-- Três principaius tipos instalações: direct, mac/windows e cloud
-  - Linux ([diferente por distribuição](https://store.docker.com/), não usar gerenciador de pacotes padrão)
-    - `curl -sSL https://get.docker.com/ | sh`
-  - [Windows](https://www.docker.com/docker-windows) (ou Docker Toolbox para versões diferente da 10 Pro/Enterprise)
-  - Mac (ou Docker Toolbox, não usar brew)
-  - Cloud: AWS/Azure/Google, versões do docker, com características/aplicações específicas da empresa que está distribuindo.
+- `Stable` versão estável, testada, etc.
+- `Edge` permite download antecipado, lançamentos mensais, a cada 4 meses esta versão vira um versão estável.
+
+### Installation
+
+Três principais tipos instalações: Direct, Mac/Windows e Cloud
+
+- Linux ([diferente por distribuição](https://store.docker.com/)
+  - Evitar usar gerenciador de pacotes
+  - `curl -sSL https://get.docker.com/ | sh`
+
+- [Windows](https://www.docker.com/docker-windows) (ou Docker Toolbox para versões diferente da 10 Pro/Enterprise)
+
+- Mac (ou Docker Toolbox, não usar brew)
+
+- Cloud: AWS/Azure/Google, versões do docker, com características/aplicações específicas da empresa que está distribuindo.
 
 ## Container
 

@@ -27,4 +27,12 @@
     - `-v`, `--volumes` remove automaticamente todos os *named volumes*
     - `-t`, `--timeout` permite especificar um tempo de timeout para executar o shutdown _(Default: 10)_
     - `--rmi all/local` permite remover todas as imagens utilizadas por qualquer serviço / remover somente imagens que não possuem nenhuma tag customizada pelo campo _image_
-- Permite adicionar configuração de build da imagem;
+
+- `docker-compose ps` exibe uma lista com dos serviços rodandos, comandos de startup e portas expostas
+  - segue um padrão de nome assim: {PROJECTNAME}_{SERVICE-NAME}_{NUMERICAL-NUMBER-OF-REPLICA/CONTAINER}
+
+- `docker-compose logs` exibe logs dos serviços
+  - pode ser filtrado informando nome do servico `docker-compose logs web`
+
+- `docker-compose exec SERVICE_NAME COMMAND` permite executar comandos dentro do servico
+  - exemplo, executando shell dentro do container: `docker-compose exec web sh`

@@ -10,6 +10,6 @@
 
 - Sempre priorizar o uso do `WORKDIR` (criar [se não existir] e acessar) em vez do `RUN mkdir XXX`, exceto quando for necessário determinar permissões através do `chown`
 
-- Images: Priorizar versões pares de major releases por serem mais estáveis, imagens ímpares tendem à serem designadas à versões de release [Node.js Release Schedule](https://github.com/nodejs/Release#release-schedule)
-- Images: Não utilizar a tag `:latest`
-- Images: Priorizar início de uso com imagens Debian e aos poucos migrando para Alpine, sendo que em grandes apps o Alpine pode não possuir alguma dependência necessária para o projeto. Evitar utilizar imagens `:slim` e `:onbuild`
+- Priorizar versões pares da imagem do Node.js, visto que representam major releases / LTS (Long Term Support), versões ímpares tendem à serem designadas à versões de release/experimental [Node.js Release Schedule](https://github.com/nodejs/Release#release-schedule)
+- Não utilizar a tag `:latest`
+- Priorizar início de uso com imagens `:debian` visto que todas as imagens por padrão usam a do debian como imagem base e aos poucos migrando para `:alpine`, sendo que em grandes apps o Alpine pode não possuir alguma dependência necessária para o projeto. Evitar utilizar imagens `:slim` e `:onbuild`

@@ -57,6 +57,8 @@ Três principais tipos instalações: Direct, Mac/Windows e Cloud
 
 ## [Docker Images](/docs/images.md)
 
+> [Dockerfile Best Practices for Node.js](/docs/nodejs-dockerfile-best-practices.md)
+
 ## [Docker Network](/docs/network.md)
 
 ## [Docker Volumes](/docs/volumes.md)

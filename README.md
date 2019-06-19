@@ -80,3 +80,6 @@ Três principais tipos instalações: Direct, Mac/Windows e Cloud
 - [Curso Docker - Cod3r](https://www.udemy.com/curso-docker/)
 - [Docker Extension - Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=PeterJausovec.vscode-docker)
 - [The Moby Project](https://github.com/moby/moby)
+- [Container Scanning Comparision](https://kubedex.com/follow-up-container-scanning-comparison/)
+- [Alpine Linux Docker Images, are they really more secure?
+](https://www.youtube.com/watch?v=e2pAkcqYCG8)

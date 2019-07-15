@@ -400,3 +400,24 @@ Um exemplo utilizando o stack compose [pode ser visto aqui](resources/docker-mas
 
 [Exemplo pode ser encontrado nesta pasta](resources/docker-mastery/swarm-stack-3)
 
+## Service Updates
+
+- Prove recurso de substituição de tasks/containers de um service
+- Limita o downtime (não previne, mas limita)
+- Vai substituir o container na maior parte das alterações
+- Possui um monte de opções no update, como vimos anteriormente.
+- Inclui opções de rollbacks e healthcheck
+- Também tem sub-comandos de scale & rollback para acesso rápido `docker service scale web=4` ou `docker service rollback web` sem especificar o `--rollback` por ser muito utilizado.
+- Um stack deploy de mesmo nome, é considerado um update.
+
+### Exemplos comuns
+
+- Atualizar a imagem para uma nova versão `docker service update --image myapp:1.2.1 <service_name>`
+- Adicionar uma variável de ambiente e remover uma porta em um unico comando `docker service update --env-add NODE_ENV=production --publish-rm 8080`
+- Alterar o número de replicas de dois serviços em um unico comando`docker service scale web=8 api=6`
+
+**Dica: se a stack possui múltiplos containers, que ao longo de seus ciclos de vidas são realocados em nodes, movidos, etc podem acabar sobrecarregando fisicamente um nó específico, o Swarm em si, não move os services entre nodes, e isso pode ser feito manualmente através de atualizações dos services, que ao re-deploy irá cair no nó que está com mais recurso disponível. Pode ser feito através do comando `docker service update --force web`**
+
+
+
+

@@ -418,6 +418,26 @@ Um exemplo utilizando o stack compose [pode ser visto aqui](resources/docker-mas
 
 **Dica: se a stack possui múltiplos containers, que ao longo de seus ciclos de vidas são realocados em nodes, movidos, etc podem acabar sobrecarregando fisicamente um nó específico, o Swarm em si, não move os services entre nodes, e isso pode ser feito manualmente através de atualizações dos services, que ao re-deploy irá cair no nó que está com mais recurso disponível. Pode ser feito através do comando `docker service update --force web`**
 
+## Healthchecks
 
+- É suportado no Dockerfile, Compose YAML, docker run, e Swarm Services.
+- Docker engine irá `exec` executar o comando no container (Ex: `curl localhost`)
+  - A engine aguarda pelas seguintes respostas `exit 0` (OK) ou `exit 1` (Error)
+- Existe somente 3 tipos de estados de container: starting, healthy e unhealthy.
+- Os healthchecks em services, são executados em um intervalo de 30segundos.
+- O status do healthcheck aparece no comando `docker container ls`
+- Os ultimos 5 healthchecks aparecem no `docker container inspect`
+- O docker run considera somente o primeiro de healthcheck na inicialização
+- Services irão substituir as tasks caso o healthcheck falhe, tentando novamente provavelmente em um novo host, dependendo do scheduler.
+- Service updates aguardam os healthchecks antes de proceder.
 
+### Exemplos
 
+Exemplo utilizando docker run `docker run --health-cmd="curl -f localhost:9200/_cluster/health || false" --health-interval=5s --health-retries=3 --health-timeout=2s --health-start-period=15s elasticsearch:2`
+
+Exemplo no Dockerfile
+
+- `--interval=DURATION` Default: 30s
+- `--timeout=DURATION` Default: 30s
+- `--start-period=DURATION`  Default: 0s
+- `--retries=N` Default: 3

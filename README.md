@@ -42,7 +42,7 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 
 Três principais tipos instalações: Direct, Mac/Windows e Cloud
 
-- Linux ([diferente por distribuição](https://store.docker.com/)
+- Linux [diferente por distribuição](https://store.docker.com/)
   - Evitar usar gerenciador de pacotes
   - `curl -sSL https://get.docker.com/ | sh`
 

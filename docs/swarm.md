@@ -340,3 +340,63 @@ Criar serviço `docker service create --name search --repliaces 3 -p 9200:9200 e
 Verificar os serviços criados `docker service ps search`
 
 Testar o **load balancer** através do curl `curl localhost:9200` que irá cair em nos 3 serviços aleatóriamente.
+
+## Assigment Swarm 1
+
+... TODO
+
+Para verificar os logs de todos os containers de todos os serviços foi utilizado uma feature ainda não liberada que é o comando `docker service logs`, normalmente é exigido o identificador do container.
+
+## Swarm Stacks
+
+É uma camada de abstração que aceita Compose files como definição declarativa para services, networks e volumes.
+
+Utiliza o comando `docker stack deploy` em vez do `docker service create`.
+
+Stacks gerenciam todos os objetivos, incluindo o network overlay por stack. Também é adicionado o nome da stack como prefixo de seus respectivos nomes.
+
+É identificado através da **key** `deploy:` no Compose file. Não faz o `build:` pois agora estamos no cenário de **produção**, esta etapa de construção de imagem deve ser feita por um CI da vida.
+
+**Resumindo, o compose ignore a key _deploy:_ e o swarm ignora a key _build:_**
+
+`docker-compose` CLI não é necessária em um Swarm server.
+
+![Docker Swarm Stacks](images/docker-swarm-stacks.png)
+
+[Docker Swarm Stack Stack Example 1](resources/docker-mastery/swarm-stack-1/example-voting-app-stack.yml)
+
+Podemos fazer o deploy da stack acima através do comando `docker stack deploy -c example-voting-app-stack.yml voteapp`
+
+Podemos então ter um overview dos serviços que estão rodando de determinada stack através do comando `docker stack services voteapp` ou `docker stack ps voteapp`, neste segundo, temos inclusive os nodes aos quais pertencem.
+
+### Secrets Storage
+
+É a maneira mais facil e segura para armazenar _secrets_ no Swarm.
+
+O que é um _secret_? Username/passwords, certificados e chaves TLS, SSH keys, basicamente qualquer dado que seja preferivel que não esteja na capa de um jornal.
+
+- Suporta strings ou binários até de 500Kb de tamanho.
+- Raft Database é encriptada no disco.
+- Só é armazenada nos nodes Managers.
+- O padrão são Managers e Workers "control plane" é TLS + Mutual Auth
+- Secrets são armazenados primeiro no Swarm, e depois atribuídos aos services.
+- Somente containers atribuidos aos serviços acessar.
+- Parecem arquivos no container, mas na verdade são um sistema de arquivo em memória. `/run/secrets/<secret_name/secret_alias>`
+- Local docker-compose pode usar secrets como arquivos, mas não são seguros.
+
+Para criar pode ser utilizado o comando `docker secret create psql_user psql_user.txt` ou `echo "myDBPassword" | docker secret create psql_pass -`
+
+É possível inspecionar os _secrets_ através do comando `docker secret ls` e então `docker secret inspect psql_user`
+
+Para criar um service manualmente mapeando para os secrets, pode-se utilizar o seguinte exemplo: `docker service create --name psql --secret psql_user --secret psql_user --secret psql_pass -e POSTGRES_PASSWORD_FILE=/run/secrets/psql_pass -e POSTGRES_USER_FILE=/run/secrets/psql_user postgres`
+
+Um exemplo utilizando o stack compose [pode ser visto aqui](resources/docker-mastery/secrets-sample-2/docker-compose.yml)
+
+## Full App Lifecycle with Compose
+
+- Local `docker-compose up` development environment
+- Remote `docker-compose up` CI environment
+- Remote `docker stack deploy` production environment
+
+[Exemplo pode ser encontrado nesta pasta](resources/docker-mastery/swarm-stack-3)
+

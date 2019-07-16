@@ -53,19 +53,21 @@ Três principais tipos instalações: Direct, Mac/Windows e Cloud
 
 - Cloud: AWS/Azure/Google, versões do docker, com características/aplicações específicas da empresa que está distribuindo.
 
-## [Docker Containers](/docs/containers.md)
+## [Containers](/docs/containers.md)
 
-## [Docker Images](/docs/images.md)
+## [Images](/docs/images.md)
 
 > [Dockerfile Best Practices for Node.js](/docs/nodejs-dockerfile-best-practices.md)
 
-## [Docker Network](/docs/network.md)
+## [Network](/docs/network.md)
 
-## [Docker Volumes](/docs/volumes.md)
+## [Volumes](/docs/volumes.md)
 
-## [Docker Compose](/docs/compose.md)
+## [Compose](/docs/compose.md)
 
-## [Docker Swarm](/docs/swarm.md)
+## [Swarm](/docs/swarm.md)
+
+## [Registry](/docs/registry.md)
 
 ## Referências
 
@@ -76,11 +78,14 @@ Três principais tipos instalações: Direct, Mac/Windows e Cloud
 - [Docker | Docs - Networking Overview](https://docs.docker.com/network/)
   - [Node.js Docker Good Defaults - BretFisher @ Github](https://github.com/BretFisher/node-docker-good-defaults)
   - [PHP Docker Good Defaults - BretFisher @ Github](https://github.com/BretFisher/php-docker-good-defaults)
-
+- [Awesome Docker @ Github](https://github.com/veggiemonk/awesome-docker)
 - [Play with Docker](https://labs.play-with-docker.com/)
+- [Training - Play with Docker](http://training.play-with-docker.com/)
+- [The Future of Docker Swarm - Brett Fisher](https://www.bretfisher.com/the-future-of-docker-swarm/)
 - [Cloud Native Landscape](https://landscape.cncf.io/)
 - [Article About the DCA (Docker Certificated Associate](https://www.bretfisher.com/docker-certified-associate/)
 - [Docker Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=PeterJausovec.vscode-docker)
+- [Everything You Thought You Already Knew About Orchestration @ Youtube](https://www.youtube.com/watch?v=Qsv-q8WbIZY)
 - [The Moby Project](https://github.com/moby/moby)
 - [Container Scanning Comparision](https://kubedex.com/follow-up-container-scanning-comparison/)
 - [Alpine Linux Docker Images, are they really more secure?](https://www.youtube.com/watch?v=e2pAkcqYCG8)

@@ -1,4 +1,4 @@
-# Registry
+# Docker Registry
 
 Uma repositório (registry) de imagens deve fazer parte do seu plano de containers.
 

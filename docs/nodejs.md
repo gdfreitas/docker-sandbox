@@ -63,7 +63,29 @@
 - Ao utilizar o Tini para ser o init process do container, ele irá remover o container logo quando receber um sigint ou sigterm (ctrl+c em terminais linux/mac ou docker stop windows)
 - Quando não utiliza-se o Tini ao enviar os signals para remover, o Docker aguardará 10 segundos e irá efetuar o kill do processo (caso a aplicação não esteja preparada para responder o sigterm/sigint)
 - [Dockerfile Assignment - Testes com e sem o Tini](resources/docker-mastery-for-nodejs/assignment-dockerfile)
+- [Sample Graceful Shutdown](resources/docker-mastery-for-nodejs/sample-graceful-shutdown)
 
 - [Docker Docs: Inject --init into docker run for process management](https://docs.docker.com/engine/reference/run/#specify-an-init-process)
 - [Tini: "A tiny but valid init for containers"](https://github.com/krallin/tini)
 - [hapi.js - API Framework](https://hapijs.com/)
+
+## Multi-stage Builds
+
+- Funcionalidade adicionada na versão 17.06 (mid-2017)
+- Permite a criação de multiplas imagens de um único arquivo Dockerfile, perfeito para diferentes ambientes.
+- Permite além da facilidade de ter um único arquivo, segurança e melhor aproveitamento de espaço entre imagens.
+- É chamado também como "artifact only images"
+
+- Como o build pode ser feito de um Dockerfile com multiplos stages?
+- Por padrão irá ser feito top-down e o ultimo que irá ser levado em consideração no comando `docker build -t myapp .`
+- Para um **stage** específico deve ser utilizado o comando `docker build -t myapp:prod --target prod .`
+
+- [Sample Multi Stage](resources/docker-mastery-for-nodejs/sample-multi-stage)
+
+- [Docker Docs - Use multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/)
+- [Advanced multi-stage build patterns](https://medium.com/@tonistiigi/advanced-multi-stage-build-patterns-6f741b852fae)
+- [DockerCon Video: Supercharged Docker Build with BuildKit](https://www.youtube.com/watch?v=kkpQ_UZn2uo)
+- [Docker Docs: Build Enhancements in 18.09](https://docs.docker.com/develop/develop-images/build_enhancements/)
+- [GitHub: BuildKit needs support for docker-compose](https://github.com/moby/buildkit/issues/685)
+- [Docker Docs: Using SSH to access private data in builds](https://docs.docker.com/develop/develop-images/build_enhancements/#using-ssh-to-access-private-data-in-builds)
+- [BuildKit "frontends" Including Cache](https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/experimental.md)

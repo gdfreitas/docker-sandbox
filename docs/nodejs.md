@@ -89,3 +89,47 @@
 - [GitHub: BuildKit needs support for docker-compose](https://github.com/moby/buildkit/issues/685)
 - [Docker Docs: Using SSH to access private data in builds](https://docs.docker.com/develop/develop-images/build_enhancements/#using-ssh-to-access-private-data-in-builds)
 - [BuildKit "frontends" Including Cache](https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/experimental.md)
+
+## Cloud Native App Guidelines
+
+- [The Twelve-Factor App](https://12factor.net/) possui 12 princípios design de aplicações distribuídas, escrito pelo time do Heroku.
+
+- Utilizar variáveis de ambiente para configuração
+- Logar para _stdout/stderr_
+- Fixar todas as versões da aplicação, até o `npm`
+- Graceful exit utilizando _SIGTERM/INIT_
+- Criar o `.dockerignore`
+
+### Config [Twelve-Factor App - Config](https://12factor.net/config)
+
+- Armazenar configurações de ambiente como _Environment Variables_
+- Docker e Docker Compose atuam muito bem como multiplas opções de variáveis de ambiente
+- Lecay Apps: Usar CMD ou ENTRYPOINT script com _envsubst_  para passar Environment Variables para config files
+- Ex: `hostname`, `remote api dns`
+
+- [Advanced Node.js Project Structure Tutorial](https://blog.risingstack.com/node-js-project-structure-tutorial-node-js-at-scale/)
+- [Using Environment Vars in Nginx Configuration](https://docs.docker.com/samples/library/nginx/#using-environment-variables-in-nginx-configuration)
+- [Templated Nginx configuration with Bash and Docker](https://thepracticalsysadmin.com/templated-nginx-configuration-with-bash-and-docker/)
+- [envsubst example for use in Nginx](https://stackoverflow.com/questions/44804974/dynamic-default-conf-of-nginx-in-docker)
+
+### Logs [Twelve-Factor App - Config](https://12factor.net/logs)
+
+- Apps não devem rotear ou transportar logs para nenhum outro local que não seja `stdout` ou `strerr`
+- `console.log()` funciona pois irá por padrão para o _standard output_
+- [Winston](https://github.com/winstonjs/winston), [Bunyan](https://github.com/trentm/node-bunyan) e [Morgan](https://github.com/expressjs/morgan) são as opções mais utilizadas para controlar os leveis de verbosidade de logs no Node.js
+
+- [Winston Logging with the console transport](https://github.com/winstonjs/winston/blob/master/docs/transports.md#console-transport)
+
+### .dockerignore
+
+- Prevenir carregar imagens com arquivos desnecessários como: `.git/`, `node_modules/`, `npm-debug`, `docker-compose*.yml`
+- Não é necessário mas é importante que esteja na imagem: `Dockerfile` e `README.md`
+
+- [gitignore docs, use for .dockerignore](https://git-scm.com/docs/gitignore)
+- [.gitignore generator, also useful for .dockerignore](https://www.gitignore.io/)
+- [More .dockerignore examples](https://blog.codeship.com/leveraging-the-dockerignore-file-to-create-smaller-images/)
+
+### Migrating Traditional Apps
+
+- "Traditional Apps" = Pré-Docker App
+- [Assignment MTA](resources/docker-mastery-for-nodejs/assignment-mta)

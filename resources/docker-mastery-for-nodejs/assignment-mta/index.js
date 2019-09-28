@@ -4,15 +4,15 @@
 // to another hardcoded dir and exit
 // it defaults to logging to a hardcoded file path
 
-var fs      = require('fs'),
-    gm      = require('gm'),
-    isImage = require('is-image'),
-    winston = require('winston');
+const fs = require('fs');
+const gm = require('gm');
+const isImage = require('is-image');
+const winston = require('winston');
 
-var inDir          = './in',
-    outDir         = './out',
-    logDir         = './logs',
-    charcoalFactor = process.env.CHARCOAL_FACTOR; // ideally 0.1 to 1.0
+const inDir = './in';
+const outDir = './out';
+const logDir = './logs';
+const charcoalFactor = process.env.CHARCOAL_FACTOR || 1.0;
 
 const logger = winston.createLogger({
   level: 'info',
@@ -22,8 +22,11 @@ const logger = winston.createLogger({
     // - Write to all logs with level `info` and below to `combined.log` 
     // - Write all logs error (and below) to `error.log`.
     //
-    new winston.transports.File({ filename: logDir + '/error.log', level: 'error' }),
-    new winston.transports.File({ filename: logDir + '/combined.log' })
+    // new winston.transports.File({ filename: logDir + '/error.log', level: 'error' }),
+    // new winston.transports.File({ filename: logDir + '/combined.log' }),
+    new winston.transports.Console({
+      format: winston.format.simple()
+    })
   ]
 });
 
@@ -31,12 +34,12 @@ logger.log('info', 'about to start');
 
 function findFiles(dir, output, cFactor) {
   logger.log('info', 'about to scan ' + dir);
-  fs.readdir(dir, function(err, files) {
+  fs.readdir(dir, function (err, files) {
     if (err) {
       logger.log('error', err);
       return;
     }
-    files.forEach(function(file) {
+    files.forEach(function (file) {
       if (isImage(file)) {
         logger.log('info', 'found file ' + dir + '/' + file);
         logger.log('info', 'working on it, I\'m old and slow');

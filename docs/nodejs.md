@@ -1,4 +1,6 @@
-# Docker - Dockerfile: Best Practices for Node.js
+# Docker for Node.js
+
+## Dockerfile: melhores práticas para Node.js
 
 - Utilizar o `COPY` em vez do `ADD`
 
@@ -32,3 +34,36 @@
   - Evitar copiar todo o fonte antes de executar o `npm install`, desta maneira, toda alteração de fonte irá causar uma instalação de dependências novamente. O correto é copiar somente o `package.json` e `package-lock.json`, em seguida instalar as dependências e depois copiar os arquivos fonte, em uma camada abaixo.
     - Dica para copiar um arquivo opcionalmente (se não existir não irá falhar) quando deseja-se ser bastante literal no Dockerfile (o que é bastante recomendado), para isso coloca-se um asterisco ao final do arquivo, exemplo `COPY package.json package-lock.json* ./`
   - Gerenciadores de pacotes a nivel de host, executar somente um `apt-get && apt-get install` por Dockerfile e colocá-lo no topo do arquivo.
+
+- [Dockerfile USER docs](https://docs.docker.com/engine/reference/builder/#user)
+- [Docker file COPY docs](https://docs.docker.com/engine/reference/builder/#copy)
+- [Difference between chmod and chown](https://www.unixtutorial.org/difference-between-chmod-and-chown)
+
+## Controlando o Processo do Node em Containers
+
+- O Docker deve ser a camada intermediária e não será preciso `nodemon`, `forever` ou `pm2` no servidor.
+  - O `nodemon` entretanto pode ser utilizado em desenvolvimento por causa do `watch file`
+- O Docker irá gerenciar corretamente o processo (iniciar, parar, reiniciar, controle de healthcheck)
+- O Docker irá gerenciar multiplos containers da mesma imagem ("replicas/tasks", "multi-thread")
+- Por padrão tanto `npm` quanto `node` não escutam por sinais de shutdown por padrão, o que é essencial em um ambiente Docker.
+
+### Problema do PID 1
+
+- PID 1 (identificador de processo) é o primeiro processo em um sistema (ou container), e este têm basicamente dois trabalhos: remover _"zombie"_ processes e passar signals para sub-processes
+- Zombie processes não é um grande problema com Node
+
+### CMD for Healthy Shutdown
+
+- Signals são utilizado pelo Docker para se comunicar com o processo  _Ex: "Opa, quero parar a execução deste container"_
+- O Docker utiliza os signals do Linux para parar um app (`SIGINT` / `SIGTERM` / `SIGKILL`)
+  - `SIGINT` e `SIGTERM` permitem _graceful stop_, o `SIGKILL` o processo não tem nem a chance de responder.
+  - O npm não responde a esses comandos (por isso deve ser evitado em imagens Docker para executar processos).
+  - O Node.js por padrão não responde, mas pode ser implementado via código.
+
+- Ao utilizar o Tini para ser o init process do container, ele irá remover o container logo quando receber um sigint ou sigterm (ctrl+c em terminais linux/mac ou docker stop windows)
+- Quando não utiliza-se o Tini ao enviar os signals para remover, o Docker aguardará 10 segundos e irá efetuar o kill do processo (caso a aplicação não esteja preparada para responder o sigterm/sigint)
+- [Dockerfile Assignment - Testes com e sem o Tini](resources/docker-mastery-for-nodejs/assignment-dockerfile)
+
+- [Docker Docs: Inject --init into docker run for process management](https://docs.docker.com/engine/reference/run/#specify-an-init-process)
+- [Tini: "A tiny but valid init for containers"](https://github.com/krallin/tini)
+- [hapi.js - API Framework](https://hapijs.com/)

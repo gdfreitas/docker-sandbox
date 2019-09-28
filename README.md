@@ -63,12 +63,13 @@ Nas documentações abaixo é abordado suas características, aplicado exemplos,
 
 - [Containers](/docs/containers.md)
 - [Images](/docs/images.md)
-  - [Dockerfile Best Practices for Node.js](/docs/nodejs-dockerfile-best-practices.md)
 - [Network](/docs/network.md)
 - [Volumes](/docs/volumes.md)
 - [Compose](/docs/compose.md)
 - [Swarm](/docs/swarm.md)
 - [Registry](/docs/registry.md)
+
+- [Using Docker with Node.js](/docs/nodejs.md)
 
 ## References
 

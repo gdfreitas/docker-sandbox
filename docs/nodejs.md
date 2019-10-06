@@ -251,3 +251,39 @@
 
 - [Assingment Ultimate Node Dockerfile](resources/docker-mastery-for-nodejs/ultimate-node-dockerfile)
 - [Aqua Microscanner](https://github.com/aquasecurity/microscanner)
+
+## Running Production Node.js Containers
+
+- Utilizar múltiplas réplicas ao invés de PM2 ou forever
+- Começar com 1-2 replicas por CPU
+- Para testes unitários utilizar uma única replica
+- Para testes de integração utilizar multiplas replicas
+
+### Por que não utilizar Docker Compose CLI em produção?
+
+- [Bret's anser to "just one host": use Swarm or docker-compose?](https://github.com/BretFisher/ama/issues/8)
+
+### Node.js Containers with Proxies
+
+- [5 Performance tips for Node.js apps](https://www.nginx.com/blog/5-performance-tips-for-node-js-applications/)
+- [A few proxy examples in YAML for Swarm](https://github.com/BretFisher/dogvscat)
+
+### Container Replacement and Connection Management
+
+- [godaddy terminus for graceful shutdown](https://github.com/godaddy/terminus)
+- [Graceful shutdown with Node.js and Kubernetes](https://blog.risingstack.com/graceful-shutdown-node-js-kubernetes/)
+- [Express.js Health Checks and Graceful Shutdown](https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html)
+- [Stoppable, tracking connections and graceful HTTP shutdown](https://github.com/hunterloftis/stoppable)
+- [Browncoat: It aims to misbehave. Testing shutdown, blue/green, and rolling updates.](https://github.com/BretFisher/browncoat)
+
+### Node.js with Container Orchestration
+
+- [Exemplo de orquestração](resources/docker-mastery-for-nodejs/sample-result-orchestration)
+
+- [Socket.io with Redis for multi-container](https://github.com/socketio/socket.io-redis)
+
+### Node.js with Docker Swarm
+
+- [Exemplo de Swarm com o app de votação](resources/docker-mastery-for-nodejs/sample-swarm)
+
+- ["dogvs.cat" Sample apps and YAML for Swarm](https://github.com/BretFisher/dogvscat)

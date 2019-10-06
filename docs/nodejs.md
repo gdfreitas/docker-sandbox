@@ -133,3 +133,58 @@
 
 - "Traditional Apps" = Pré-Docker App
 - [Assignment MTA](resources/docker-mastery-for-nodejs/assignment-mta)
+
+## Compose
+
+- Utilizar o _docker-compose_ para desenvolvimento local
+- Versão 2 é ideal para desenvolvimento local
+  - Versão 3 do .yaml é mais voltada para _swarm ou kubernetes apps_ (não possui o *depends_on* e outros controles de hardwares específicos que existe no v2)
+
+- [O que FAZER e o que NÃO FAZER em compose files](resources/docker-mastery-for-nodejs/compose-tips)
+
+- [Docker Docs: Compose file v2](https://docs.docker.com/compose/compose-file/compose-versioning/#version-21)
+
+### Bind-Mounting Code: Optimizing for Performance
+
+- [Mac Docker file caching performance improvements](https://blog.docker.com/2017/05/user-guided-caching-in-docker-for-mac/)
+- [Docker on Mac's file system sharing details](https://docs.docker.com/docker-for-mac/osxfs/)
+- [Performance tuning for volume mounts on Mac](https://docs.docker.com/docker-for-mac/osxfs-caching/)
+- [Background Sync Tool, and alternative to bind-mounts.](https://github.com/cweagans/docker-bg-sync)
+- [Docker for Windows alternate setups with WSL](https://www.reddit.com/r/docker/comments/8hp6v7/setting_up_docker_for_windows_and_wsl_to_work/)
+
+- [Exemplo de .dockerignore para não enviar node_modules para imagem](resources/docker-mastery-for-nodejs/sample-sails)
+- [Exemplo Strapi](resources/docker-mastery-for-nodejs/sample-strapi)
+
+- [Nodemon Config Files](https://github.com/remy/nodemon#config-files)
+- [Exemplo Nodemon](resources/docker-mastery-for-nodejs/sample-nodemon)
+
+### Healthchecks for _depends_on_
+
+- [Exemplo de health-check no Compose para aprimorar uso do Depends-on](resources/docker-mastery-for-nodejs/depends-on)
+
+- [Compose v2 depends_on Docs](https://docs.docker.com/compose/compose-file/compose-file-v2/#depends_on)
+- [Compose File v2 Healthcheck](https://docs.docker.com/compose/compose-file/compose-file-v2/#healthcheck)
+- [Example DB Healthchecks from Docker](https://github.com/docker-library/healthcheck)
+
+### Making Microservices Easier with Compose
+
+- [Exemplo de proxy local](resources/docker-mastery-for-nodejs/sample-local-proxy)
+
+- [Localhost Certificates](https://letsencrypt.org/docs/certificates-for-localhost/)
+- [jwilder/nginx-proxy](https://github.com/jwilder/nginx-proxy)
+- [Use dnsmasq rather then etc hosts for dev](https://www.stevenrombauts.be/2018/01/use-dnsmasq-instead-of-etc-hosts/)
+- [Use nginx-proxy + dnsmasq](https://medium.com/@sumankpaul/use-nginx-proxy-and-dnsmasq-for-user-friendly-urls-during-local-development-a2ffebd8b05d)
+- [Traefik Proxy](https://traefik.io/)
+- [Docker + CORS Discussion 1](https://github.com/docker-solr/docker-solr/issues/182)
+- [Docker + CORS Discussion 2](https://github.com/jwilder/nginx-proxy/issues/804)
+- [Wildcard DNS for everyone](http://xip.io/)
+
+### Node.js Remote Docker Debugging
+
+- [Exemplo de remote debugging com Typescript](resources/docker-mastery-for-nodejs/typescript)
+- [Assignment Compose](resources/docker-mastery-for-nodejs/assignment-sweet-compose)
+
+- [Node.js debugging in VS Code](https://code.visualstudio.com/docs/nodejs/nodejs-debugging)
+- [Debugging TypeScript in a Docker Container](https://github.com/Microsoft/vscode-recipes/tree/master/Docker-TypeScript)
+- [ts-node readme](https://github.com/TypeStrong/ts-node)
+

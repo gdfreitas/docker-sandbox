@@ -188,3 +188,66 @@
 - [Debugging TypeScript in a Docker Container](https://github.com/Microsoft/vscode-recipes/tree/master/Docker-TypeScript)
 - [ts-node readme](https://github.com/TypeStrong/ts-node)
 
+## Images Production Ready
+
+### Avoiding devDependencies in Prod
+
+- Production stages: `npm i --only=production`
+- Development stages: `npm i --only=development`
+- CI stages: `npm ci` (instala diretamente do _package-lock_) é mais rápido.
+- Garantir que `NODE_ENV` esteja definido
+
+- [Exemplo de Multi-stage Build](resources/docker-mastery-for-nodejs/multi-stage-deps)
+
+### Dockerfile Comments, Arguments and Labels
+
+- Imprimir informações de configuração do npm `npm config list`
+
+- [Exemplo Dockerfile Labels](resources/docker-mastery-for-nodejs/dockerfile-labels)
+
+- [Dockerfile LABEL info in Docs](https://docs.docker.com/engine/reference/builder/#label)
+- [Docker object labels](https://docs.docker.com/config/labels-custom-metadata/)
+- [OCI standard label format](https://github.com/opencontainers/image-spec/blob/master/annotations.md)
+- [Dockerfile ARG info in Docs](https://docs.docker.com/engine/reference/builder/#arg)
+
+### Running Tests During Image Builds
+
+- `RUN npm test` em um stage específico, também é sugere-se utilizar para linting
+- Rodar somente testes unitários em build time, não rodar automações, etc
+
+- [Exemplo Multi-stage for Tests](resources/docker-mastery-for-nodejs/multi-stage-test)
+
+- [Docker Hub Advanced options for autobuild and autotest](https://docs.docker.com/docker-hub/builds/advanced/)
+- [Node Hero - Node.js Unit Testing Tutorial](https://blog.risingstack.com/node-hero-node-js-unit-testing-tutorial/)
+
+### Security Scanning During Image Build
+
+- `RUN npm audit`
+
+- [Exemplo Multi-stage for scanning](resources/docker-mastery-for-nodejs/multi-stage-scanning)
+
+- [10 npm Security Best Practices](https://snyk.io/blog/ten-npm-security-best-practices/)
+- [10 npm Security Best Practices](https://kubedex.com/container-scanning/)
+- [Part 2: Follow up on Container Scanning](https://kubedex.com/follow-up-container-scanning-comparison/)
+- [Docker image scanning how-to](https://sysdig.com/blog/container-security-docker-image-scanning/)
+- [29 Docker security tools compared](https://sysdig.com/blog/20-docker-security-tools/)
+
+### CI Automated Testing and Proper Image Tags
+
+- [How to deal with docker-compose CI exit codes](https://stackoverflow.com/questions/29568352/using-docker-compose-with-ci-how-to-deal-with-exit-codes-and-daemonized-linked)
+- [Hadolint, a Dockerfile linter](https://github.com/hadolint/hadolint)
+- [dockerfilelint, An opinionated Dockerfile linter](https://github.com/replicatedhq/dockerfilelint)
+- [Docker Hub automated repo testing with docker-compose](https://docs.docker.com/docker-hub/builds/automated-testing/)
+- [Docker tag "latest" confusion](https://container-solutions.com/docker-latest-confusion/)
+
+### Adding Healthchecks
+
+- [Exemplo com 03 diferentes opções de healthcheck](resources/docker-mastery-for-nodejs/healthchecks)
+
+- [Dockerfile HEALTHCHECK docs](https://docs.docker.com/engine/reference/builder/#healthcheck)
+- [Effective Docker Healthchecks for Node.js](https://medium.com/@patrickleet/effective-docker-healthchecks-for-node-js-b11577c3e595)
+
+### Assignment
+
+- [Assingment Ultimate Node Dockerfile](resources/docker-mastery-for-nodejs/ultimate-node-dockerfile)
+- [Aqua Microscanner](https://github.com/aquasecurity/microscanner)

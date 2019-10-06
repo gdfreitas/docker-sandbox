@@ -19,6 +19,7 @@ services:
   result:
     build: 
       context: .
+      target: dev
     ports:
       - '5001:80'
     volumes:

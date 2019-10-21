@@ -12,11 +12,11 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 
 ### Quais as vantagens do Docker em relação às tradicionais Máquinas Virtuais
 
-1. Rapidez, agilidade _"Docker is all about speed"_
-  1.1 Em vários sentidos: para desenvolver, construir, testar, lançar, atualizar e recuperar
-2. O consumo de recursos é muito menor com o Docker
-  2.2 Herda o Kernel e entre outros recursos da máquina host
-3. Supondo que um a inicialização de um container leva 1seg, a mesma operação em uma máquina virtual com o sistema operacional inteiro, levaria cerca de 1min;
+- Rapidez, agilidade _"Docker is all about speed"_
+  - Em vários sentidos: para desenvolver, construir, testar, lançar, atualizar e recuperar
+- O consumo de recursos é muito menor com o Docker
+  - Herda o Kernel e entre outros recursos da máquina host
+- Supondo que um a inicialização de um container leva 1seg, a mesma operação em uma máquina virtual com o sistema operacional inteiro, levaria cerca de 1min;
 
 ## Principais características
 

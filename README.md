@@ -18,7 +18,7 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
   - Herda o Kernel e entre outros recursos da máquina host
 - Supondo que um a inicialização de um container leva 1seg, a mesma operação em uma máquina virtual com o sistema operacional inteiro, levaria cerca de 1min;
 
-## Principais características
+## Características
 
 - Não é um sistema de virtualização tradicional (VM - Virtual Machine)
 - É uma engine de administração de containers (ambiente/serviço isolado da maquina host)
@@ -33,12 +33,12 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 - Docker EE (Enterprise Edition): pago
   - Recomendado para grandes empresas, possui suporte 24/7, diretivas de seguranças em imagens, certificado em plataformas específicas, entre outros diversos produtos extras.
 
-### Versions
+### Versões
 
 - `Stable` versão estável, testada, etc.
 - `Edge` permite download antecipado, lançamentos mensais, a cada 4 meses esta versão vira um versão estável.
 
-### Installation
+### Instalação
 
 Três principais tipos instalações: Direct, Mac/Windows e Cloud
 
@@ -57,74 +57,45 @@ Três principais tipos instalações: Direct, Mac/Windows e Cloud
 
 - Cloud: AWS/Azure/Google, versões do docker, com características/aplicações específicas da empresa que está distribuindo.
 
-## Docker Concepts
+## Conceitos
 
 Nas documentações abaixo é abordado suas características, aplicado exemplos, etc.
 
 - [Containers](/docs/containers.md)
 - [Images](/docs/images.md)
+- [Registry](/docs/registry.md)
 - [Network](/docs/network.md)
 - [Volumes](/docs/volumes.md)
 - [Compose](/docs/compose.md)
 - [Swarm](/docs/swarm.md)
-- [Registry](/docs/registry.md)
-
+- [Kubernetes (K8s)](/docs/kubernetes.md)
 - [Using Docker with Node.js](/docs/nodejs.md)
 
-## References
+## Referências
 
-### Docker Documentation
+### Docker Docs
 
 - [Docker Docs - Get Started](https://docs.docker.com/get-started/)
-- [Docker Docs - Networking Overview](https://docs.docker.com/network/)
-- [Docker Docs - Docker's --format option for filtering](https://docs.docker.com/config/formatting/)
-- [Docker Docs - Images and Containers From Docker Docs](https://docs.docker.com/storage/storagedriver/)
-- [Docker Docs - Dockerfile Command Details](https://docs.docker.com/engine/reference/builder/)
-- [Docker Docs - Docker Storage: manage data in Docker](https://docs.docker.com/storage/)
-- [Docker Docs - Compose File Version Differences](https://docs.docker.com/compose/compose-file/compose-versioning/)
-- [Docker Docs - Don't use Links! It's a legacy feature of compose, and isn't needed](https://docs.docker.com/compose/compose-file/#links)
-- [Docker Docs - Compose file build options - Docker Docs](https://docs.docker.com/compose/compose-file/#build)
-- [Docker Docs - Deploy services to a swarm](https://docs.docker.com/engine/swarm/services/)
-- [Docker Docs - Windows Hyper-V driver for docker-machine](https://docs.docker.com/machine/drivers/hyper-v/)
-- [Docker Docs - Use swarm mode routing mesh](https://docs.docker.com/engine/swarm/ingress/)
-- [Docker Docs - Features Not Supported In Stack Deploy](https://docs.docker.com/compose/compose-file/#not-supported-for-docker-stack-deploy)
-- [Docker Docs - Manage sensitive data with Docker secrets (Lots of good reading and examples)](https://docs.docker.com/engine/swarm/secrets/)
-- [Docker Docs - Secrets In Compose Files](https://docs.docker.com/compose/compose-file/#secrets-configuration-reference)
-- [Docker Docs - Using Multiple Compose Files](https://docs.docker.com/compose/extends/#multiple-compose-files)
-- [Docker Docs - Using Compose Files In Production](https://docs.docker.com/compose/production/)
-- [Docker Docs - Service Update command](https://docs.docker.com/engine/reference/commandline/service_update/)
-- [Docker Docs - HEALTHCHECK in Dockerfile](https://docs.docker.com/engine/reference/builder/#healthcheck)
-- [Docker Docs - Healthcheck in Compose files](https://docs.docker.com/compose/compose-file/#healthcheck)
-- [Docker Docs - Registry Configuration Docs](https://docs.docker.com/registry/configuration/)
-- [Docker Docs - Registry Garbage Collection](https://docs.docker.com/registry/garbage-collection/)
-- [Docker Docs - Use Registry As A "Mirror" of Docker Hub](https://docs.docker.com/registry/recipes/mirror/)
 - [Docker Docs - QEMU Emulator in Docker Desktop for Mac/Windows](https://docs.docker.com/docker-for-mac/multi-arch/)
-- [Docker Docs - Docker Build Documentation](https://docs.docker.com/engine/reference/commandline/build/)
-- [Docker Docs - ENTRYPOINT in Dockerfiles](https://docs.docker.com/engine/reference/builder/#entrypoint)
-- [Docker Docs - ENTRYPOINT Best Practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#entrypoint)
 
-## Repositories
+### Repositórios
 
-- [Docker Mastery: Github Repository](https://github.com/bretfisher/udemy-docker-mastery)
-- [Node.js Docker Good Defaults - BretFisher @ Github](https://github.com/BretFisher/node-docker-good-defaults)
-- [PHP Docker Good Defaults - BretFisher @ Github](https://github.com/BretFisher/php-docker-good-defaults)
+- [Docker @ GitHub](https://github.com/docker)
+- [Moby @ GitHub](https://github.com/moby/moby)
+- [Docker Mastery @ GitHub](https://github.com/bretfisher/udemy-docker-mastery)
+- [Docker Library - Official Images @ GitHub](https://github.com/docker-library/official-images/tree/master/library)
+
+___
+
+- [Node.js Docker Good Defaults - bretfisher @ Github](https://github.com/bretfisher/node-docker-good-defaults)
+- [PHP Docker Good Defaults - bretfisher @ Github](https://github.com/bretfisher/php-docker-good-defaults)
+
+___
+
 - [Awesome Docker @ Github](https://github.com/veggiemonk/awesome-docker)
-- [The Moby Project](https://github.com/moby/moby)
 - [Docker for the Virtualization Admin - EBook](https://github.com/mikegcoleman/docker101/blob/master/Docker_eBook_Jan_2017.pdf)
-- [List of Official Docker Images](https://github.com/docker-library/official-images/tree/master/library)
-- [Docker Compose Release Downloads (good for Linux users that need to download manually)](https://github.com/docker/compose/releases)
-- [Production Servers: Compose vs. Swarm](https://github.com/BretFisher/ama/issues/8)
-- [PHP Laravel Good Defaults with Docker](https://github.com/BretFisher/php-docker-good-defaults)
-- [Only one host for production, should I use docker-compose or Swarm](https://github.com/BretFisher/ama/issues/8)
-- [Those Same ENV's overwritten with docker-compose.yml](https://github.com/BretFisher/php-docker-good-defaults/blob/master/docker-compose.yml)
-- [Simple example of using Docker ENV's to create custom app config](https://github.com/BretFisher/php-docker-good-defaults/blob/master/docker-php-entrypoint)
-- [Docker MySQL Official Image Entrypoint Script that creates ENV's from files (for secrets)](https://github.com/docker-library/mysql/blob/a7a737f1eb44db467c85c8229df9d886dd63460e/8.0/docker-entrypoint.sh#L21-L41)
-- [3 Docker Compose features for improving team development workflow](https://www.oreilly.com/ideas/3-docker-compose-features-for-improving-team-development-workflow)
-- [My Examples of using Traefik with Swarm](https://github.com/BretFisher/dogvscat)
-- [image2docker for windows container](https://github.com/docker/communitytools-image2docker-win)
-- [image2docker linux container](https://github.com/docker/communitytools-image2docker-linux)
 
-## Articles & Videos
+### Artigos e Videos
 
 - [Play with Docker](https://labs.play-with-docker.com/)
 - [Training - Play with Docker](http://training.play-with-docker.com/)
@@ -165,8 +136,8 @@ Nas documentações abaixo é abordado suas características, aplicado exemplos,
 - [ENTRYPOINT vs CMD](http://www.johnzaccone.io/entrypoint-vs-cmd-back-to-basics/)
 - [image2docker demo](https://www.youtube.com/watch?v=YVfiK72Il5A)
 
-## Docker Courses at Udemy
+### Cursos sobre Docker
 
-- [Docker Mastery: The Complete Toolset From a Docker Captain](https://www.udemy.com/docker-mastery)
-- [Docker Master For Node.JS](https://www.udemy.com/docker-mastery-for-nodejs)
-- [Docker Course at Udemy @ Cod3r](https://www.udemy.com/curso-docker/)
+- [Docker Mastery: with K8s & Swarm from a Docker Captain](https://www.udemy.com/docker-mastery)
+- [Docker for Node.js Projects From a Docker Captain](https://www.udemy.com/docker-mastery-for-nodejs)
+- [Docker: Ferramenta essencial para Desenvolvedores](https://www.udemy.com/curso-docker/)

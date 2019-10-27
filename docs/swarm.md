@@ -441,3 +441,18 @@ Exemplo no Dockerfile
 - `--timeout=DURATION` Default: 30s
 - `--start-period=DURATION`  Default: 0s
 - `--retries=N` Default: 3
+
+## Referências
+
+- [Docker Docs - Deploy services to a swarm](https://docs.docker.com/engine/swarm/services/)
+- [Docker Docs - Windows Hyper-V driver for docker-machine](https://docs.docker.com/machine/drivers/hyper-v/)
+- [Docker Docs - Use swarm mode routing mesh](https://docs.docker.com/engine/swarm/ingress/)
+- [Docker Docs - Features Not Supported In Stack Deploy](https://docs.docker.com/compose/compose-file/#not-supported-for-docker-stack-deploy)
+- [Docker Docs - Manage sensitive data with Docker secrets (Lots of good reading and examples)](https://docs.docker.com/engine/swarm/secrets/)
+- [Docker Docs - Secrets In Compose Files](https://docs.docker.com/compose/compose-file/#secrets-configuration-reference)
+- [Docker Docs - Service Update command](https://docs.docker.com/engine/reference/commandline/service_update/)
+
+___
+
+- [Only one host for production, should I use docker-compose or Swarm](https://github.com/bretfisher/ama/issues/8)
+- [My Examples of using Traefik with Swarm](https://github.com/bretfisher/dogvscat)

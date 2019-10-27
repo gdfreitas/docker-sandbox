@@ -87,3 +87,16 @@ docker image build --build-arg S3_BUCKET=myapp -t custom-image-args .
 ```
 
 [Docker Image - Exercício 1](basics/image-assignment-1/image_assingment_1.md)
+
+## Referências
+
+- [Docker Docs - About storage drivers: How to properly build and store Images](https://docs.docker.com/storage/storagedriver/)
+- [Docker Docs - Dockerfile](https://docs.docker.com/engine/reference/builder/)
+- [Docker Docs - docker build](https://docs.docker.com/engine/reference/commandline/build/)
+- [Docker Docs - HEALTHCHECK in Dockerfile](https://docs.docker.com/engine/reference/builder/#healthcheck)
+- [Docker Docs - ENTRYPOINT in Dockerfiles](https://docs.docker.com/engine/reference/builder/#entrypoint)
+- [Docker Docs - ENTRYPOINT Best Practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#entrypoint)
+
+___
+
+- [Docker MySQL Official Image Entrypoint Script that creates ENV's from files (for secrets)](https://github.com/docker-library/mysql/blob/a7a737f1eb44db467c85c8229df9d886dd63460e/8.0/docker-entrypoint.sh#L21-L41)

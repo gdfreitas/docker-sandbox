@@ -23,3 +23,9 @@ Além do Docker Hub, exitem outras inumeras opções, como [podem ser vistas aqu
 - Para fazer o push de imagens, deve ser utilizado a tag do repositório, para isto, iremos baixar a imagem hello-world para utilizar de exemplo `docker pull hello-world`
 - Para criar a tag `docker tag hello-world 127.0.0.1:5000/hello-world`
 - `docker push 127.0.0.1:5000/hello-world`
+
+## Referências
+
+- [Docker Docs - Registry Configuration Docs](https://docs.docker.com/registry/configuration/)
+- [Docker Docs - Registry Garbage Collection](https://docs.docker.com/registry/garbage-collection/)
+- [Docker Docs - Use Registry As A "Mirror" of Docker Hub](https://docs.docker.com/registry/recipes/mirror/)

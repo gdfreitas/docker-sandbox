@@ -36,3 +36,17 @@
 
 - `docker-compose exec SERVICE_NAME COMMAND` permite executar comandos dentro do servico
   - exemplo, executando shell dentro do container: `docker-compose exec web sh`
+
+## Referências
+
+- [Docker Docs - Compose file versions and upgrading](https://docs.docker.com/compose/compose-file/compose-versioning/)
+- [Docker Docs - Don't use Links! It's a legacy feature of compose, and isn't needed](https://docs.docker.com/compose/compose-file/#links)
+- [Docker Docs - Compose file build options - Docker Docs](https://docs.docker.com/compose/compose-file/#build)
+- [Docker Docs - Using Multiple Compose Files](https://docs.docker.com/compose/extends/#multiple-compose-files)
+- [Docker Docs - Using Compose Files In Production](https://docs.docker.com/compose/production/)
+- [Docker Docs - Healthcheck in Compose files](https://docs.docker.com/compose/compose-file/#healthcheck)
+
+___
+
+- [Docker Compose Release Downloads (good for Linux users that need to download manually)](https://github.com/docker/compose/releases)
+- [3 Docker Compose features for improving team development workflow](https://www.oreilly.com/ideas/3-docker-compose-features-for-improving-team-development-workflow)

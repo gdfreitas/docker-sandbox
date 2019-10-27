@@ -19,7 +19,7 @@ ___
 
 ## Hands-on
 
-Exibir um resumo dos comandos disponíveis e uma breve descrição para cada  
+Exibir um resumo dos comandos disponíveis e uma breve descrição para cada
 
 ```docker
 docker
@@ -260,3 +260,7 @@ Exemplo:
 ```docker
 docker container run -it alpine sh
 ```
+
+## Referências
+
+- [Docker Docs - Docker's --format option for filtering](https://docs.docker.com/config/formatting/)

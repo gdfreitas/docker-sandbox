@@ -107,3 +107,7 @@ docker container exec -it my_nginx ping new_nginx
 
 [Docker Network - Exercício 1](basics/network_assignment_1.md)
 [Docker Network - Exercício 2](basics/network_assignment_2.md)
+
+## Referências
+
+- [Docker Docs - Networking Overview](https://docs.docker.com/network/)

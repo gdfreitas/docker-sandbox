@@ -46,3 +46,7 @@ docker container run -d --name nginx -p 80:80 -v ${pwd}:/usr/share/nginx/html ng
 
 [Docker Volumes - Exercício 1](basics/volumes_assingment_1.md)
 [Docker Volumes - Exercício 2](basics/volumes-assingment-2/volumes_assingment_2.md)
+
+## Referências
+
+- [Docker Docs - Docker Storage: manage data in Docker](https://docs.docker.com/storage/)

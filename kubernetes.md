@@ -131,3 +131,69 @@ Temos três maneiras de criar PODs através da CLI kutectl:
 - `kubectl get pods -w` obter lista de pods com a flag de watch para observar alterações
 - `kubectl delete pod/my-apache-xxxx-yyyy` deleta um pod
 - Observar o Pod sendo recriado
+
+## Expondo Portas do Kubernetes
+
+- `kubectl expose` cria um **Service** para Pods existentes
+- Um **Service** é um endereço para Pods, é necessário para conectar a Pods
+- CoreDNS permite resolver services por nome
+- Há diferentes tipos de services
+  - **ClusterIP** (default) é único e irá obter IP virtual interno no cluster (visível somente de dentro do cluster por nodes e pods através de suas respectivas portas)
+  - **NodePort** deve ser utilizado para external, aloca um _high port_ para cada node, a porta é aberta em todos os IPs do node
+  - **LoadBalancer** é mais utilizado em cloud, que permite controlar um endpoint externo de load balancer para o cluster (ex: AWS ELB, etc)
+  - **ExternalName** é usado para quando aplicacoes do cluster precisam acessar recurso externos, adiciona CNAME DNS para o CoreDNS
+
+- [Service - Documentation](https://kubernetes.io/docs/concepts/services-networking/service/)
+- [Service Types - Tutorial](https://kubernetes.io/docs/tutorials/services/)
+
+### Criando um service com ClusterIP
+
+- `kubectl get pods -w` observar alterações
+- `kubectl create deployment httpenv --image=bretfisher/httpenv` criar um servidor http utilizando código de exemplo
+- `kubectl scale deployment httpenv --replicas=5` escalar 5 replicas para podermos ter mais de um container
+- `kubectl expose deployment httpenv --port 8888` expor através de um service a porta 8888
+- `kubectl get service` obter os services
+- `kubectl run --generator run-pod/v1 tmp-shell --rm -it --image bretfisher/netshoot -- bash` como o ClusterIP só é visível dentro do cluster, no Docker Desktop temos que rodar um outro pod para testar o `curl`
+  - Após a criação do container, basta executar `curl httpenv:8888` e obter a resposta que são as variáveis de ambiente do container
+
+- [Using Services - Tutorial](https://kubernetes.io/docs/tutorials/kubernetes-basics/expose/expose-intro/)
+
+### Criando um service NodePort
+
+- `kubectl expose deployment httpenv --port 8888 --name httpenv-np --type NodePort` expoe o NodePort para permitir acesso através do host IP
+
+- Ao obter `kubectl get all` percebe-se a criação do NodePort, entretanto é importante dizer que a lógica de leitura das portas é o inverso do docker, ficando no caso `CONTAINER_PORT:HOST_PORT`
+
+```log
+NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/httpenv      ClusterIP   10.105.84.186   <none>        8888/TCP         9m27s
+service/httpenv-np   NodePort    10.108.34.168   <none>        8888:30079/TCP   60s
+service/kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP          94m
+```
+
+- No log acima entõa no NodePort temos no host a porta 30079 exposta, do intervalo permitido (`30000-32767`) por serem portas altas, evitam conflitos.
+
+- Os serviços abaixo são _aditivos_ e cada tipo de serviço cria o serviço acima
+  - ClusterIP
+  - NodePort
+  - LoadBalancer
+
+- [NodePort - Documentation](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport)
+
+### Criando um service LoadBalancer
+
+- `kubectl expose deployment httpenv --port 8888 --name httpenv-lb --type LoadBalancer` criar o load balancer
+- `curl localhost:8888` na maquina host para testar o loadbalancer
+- `kubectl delete service/httpenv service/httpenv-np service/httpenv-lb deployment/httpenv` cleanup
+
+### Kubernetes Services DNS
+
+- Começando com 1.11, DNS interno é provisionado pelo CoreDNS
+- Assim como no Swarm, é um _DNS-Based Service Discovery_
+- Até então estamos utilizando hostnames para acessar os Services Ex: `curl <hostname>`
+- Mas isso só funciona com Services dentro do mesmo Namespace `kubectl get namespaces`
+- Services tambem posuem os FQDN (Fully Qualified Domain Name) `curl <hostname>.<namespace>.svc.cluster.local`
+  - `svc` significa service
+
+- [Kubernetes DNS Specification](https://github.com/kubernetes/dns/blob/master/docs/specification.md)
+- [CoreDNS for Kubernetes](https://www.coredns.io/plugins/kubernetes/)

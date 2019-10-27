@@ -60,6 +60,19 @@ Muitas Clouds fornecem o Kubernetes como serviço, fornecendo acesso às APIs ou
 
 - [Kubernetes Components](https://kubernetes.io/docs/concepts/overview/components/#master-components)
 
+## Container Abstractions
+
+- **Pod** significa um ou mais containers rodando junto em um único **_Node_**
+  - É a unidade mais básica de um _deployment_, containers sempre estão dentro de pods
+- **Controller** é utilizado para criar ou atualizar pods e outros objetos
+  - Possui um monte de tipos, `Deployment`, `ReplicaSet`, `StatefulSet`, `DaemonSet`, `Job`, `CronJob`, etc
+- **Service** é um endpoint da rede que permite conexão com um cluster/pod
+- **Namespace** grupos para permitir agrupar e filtrar objetos de um cluster
+
+- [Pod - Documentation](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/)
+- [Service - Documentation](https://kubernetes.io/docs/concepts/services-networking/service/)
+- [Namespace - Documentation](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/)
+
 ## Instalação
 
 - Há diversas maneiras de instalar, iremos focar na mais fácil para aprendizagem
@@ -70,3 +83,51 @@ Muitas Clouds fornecem o Kubernetes como serviço, fornecendo acesso às APIs ou
 - **Linux Host ou VM** instalar [MicroK8s](https://github.com/ubuntu/microk8s)
   - Instala o K8s diretamente no sistema operacional
 - **Kubernetes in a Browser**: assim como tem o _play-with-moby_ para o Docker, temos o [`http://play-with-k8s.com`](http://play-with-k8s.com) e o [`http://katacoda.com`](https://www.katacoda.com/courses/kubernetes/playground)
+
+## Run, Create e Apply
+
+Kubernetes está sempre evoluindo, assim como a CLI.
+
+Temos três maneiras de criar PODs através da CLI kutectl:
+
+- `kubectl run` (está sendo alterada para ser somente criação de pods)
+- `kubectl create` (cria alguns recursos através da CLI ou YAML)
+- `kubectl apply` (cria e atualiza qualquer coisa através de YAML)
+
+## Criando Pods com `kubectl`
+
+- Verificar se está funcionando `kubectl version`
+- Há duas maneiras de fazer deploy de Pods (containers): via CLI ou YAML
+
+- [Kubectl Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
+- [Kubectl for Docker Users](https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/)
+
+### Via CLI
+
+- `kubectl run my-nginx --image nginx` (ignorar warning de depreciação)
+  - Na versão 1.14 este comando criou um `Deployment` que criou um `ReplicaSet` que então criou um `Pod` com um container do `nginx`
+- `kubectl get pods` obter lista de pods (simular ao `docker service ls`)
+- `kubectl get all` obtém todos os objetos
+- `kubectl delete deployment my-nginx` limpar os objetos criados
+
+#### Escalando número de réplicas
+
+- `kubectl run my-apache --image httpd` cria um deployment de somente 1 replica/pod
+- `kubectl scale deploy/my-apache --replicas 2` escala para 2 pods
+  - `kubectl scale deployment my-apache --replicas 2` comando anterior por extenso (K8s permite esta flexibilização)
+  - O objeto geralmente tem suas versões abreviadas, `deploy` = `deployment` = `deployments`
+
+#### Inspecionando Objetos
+
+- `kubectl logs deployment/my-apache` obtém os logs do pod
+  - `kubectl logs deployment/my-apache --follow --tail 1` permite seguir novos logs a partir do último 1
+- `kubectl logs -l run=my-apache` obter os logs de multiplos pods baseados em um `label` que o comando `run` aplicou
+  - O filtro por label tem um limite de 5 pods devido à obtenção ser custosa
+  - Para melhores abordagens de mullti-node logs olhar o [Stern: viewing at the CLI](https://github.com/wercker/stern)
+- `kubectl describe pod/my-apache-xxxx-yyyy` obtém a descrição de um determinado pod, incluindo eventos
+
+#### Teste de resiliêncie dos Pods
+
+- `kubectl get pods -w` obter lista de pods com a flag de watch para observar alterações
+- `kubectl delete pod/my-apache-xxxx-yyyy` deleta um pod
+- Observar o Pod sendo recriado

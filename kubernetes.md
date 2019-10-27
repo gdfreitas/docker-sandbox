@@ -197,3 +197,90 @@ service/kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP          
 
 - [Kubernetes DNS Specification](https://github.com/kubernetes/dns/blob/master/docs/specification.md)
 - [CoreDNS for Kubernetes](https://www.coredns.io/plugins/kubernetes/)
+
+## Técnicas para Gerenciamento
+
+- Os comandos que utilizamos via CLI (run, create, expose) fazem o uso de _helper templates_ chamados de _"generators"_
+- Esses templates possuem propriedades padrões para facilitar a execução via CLI, para não termos que preenche-los
+- Todo recurso do Kubernetes possui uma _specification_, também chamado de _"spec"_
+- Podemos obter a saída destes templates através da flag `--dry-run -o yaml`
+- `kubectl create deployment sample --image nginx --dry-run -o yaml`
+
+```yaml
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: sample
+    name: sample
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: sample
+    strategy: {}
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: sample
+      spec:
+        containers:
+        - image: nginx
+          name: nginx
+          resources: {}
+  status: {}
+  ```
+
+- `kubectl create job sample --image nginx --dry-run -o yaml`
+
+```yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  name: sample
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      containers:
+      - image: nginx
+        name: sample
+        resources: {}
+      restartPolicy: Never
+status: {}
+```
+
+- Também podemos testar com o expose
+- `kubectl create deploy test --image nginx` criar um deployment
+- `kubectl expose deploy test --port 80 --dry-run -o yaml`
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: test
+  name: test
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: test
+status:
+  loadBalancer: {}
+```
+
+- `kubectl delete deploy test` apagar o deployment
+
+- [kubectl Usage Convenctions - Documentation](https://kubernetes.io/docs/reference/kubectl/conventions/)
+
+## O futuro do kubectl run
+
+- [Kubectl Usage Best Practices - Documentation](https://kubernetes.io/docs/reference/kubectl/conventions/#best-practices)

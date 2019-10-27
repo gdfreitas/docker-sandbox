@@ -61,15 +61,15 @@ Três principais tipos instalações: Direct, Mac/Windows e Cloud
 
 Nas documentações abaixo é abordado suas características, aplicado exemplos, etc.
 
-- [Containers](/docs/containers.md)
-- [Images](/docs/images.md)
-- [Registry](/docs/registry.md)
-- [Network](/docs/network.md)
-- [Volumes](/docs/volumes.md)
-- [Compose](/docs/compose.md)
-- [Swarm](/docs/swarm.md)
-- [Kubernetes (K8s)](/docs/kubernetes.md)
-- [Using Docker with Node.js](/docs/nodejs.md)
+- [Containers](containers.md)
+- [Images](images.md)
+- [Registry](registry.md)
+- [Network](network.md)
+- [Volumes](volumes.md)
+- [Compose](compose.md)
+- [Swarm](swarm.md)
+- [Kubernetes (K8s)](kubernetes.md)
+- [Using Docker with Node.js](nodejs.md)
 
 ## Referências
 
@@ -84,6 +84,8 @@ Nas documentações abaixo é abordado suas características, aplicado exemplos,
 - [Moby @ GitHub](https://github.com/moby/moby)
 - [Docker Mastery @ GitHub](https://github.com/bretfisher/udemy-docker-mastery)
 - [Docker Library - Official Images @ GitHub](https://github.com/docker-library/official-images/tree/master/library)
+- [Docker Mastery by BretFisher @ GitHub](https://github.com/bretfisher/udemy-docker-mastery)
+- [Docker Mastery for Node.js by BretFisher @ GitHub](https://github.com/bretfisher/docker-mastery-for-nodejs)
 
 ___
 
@@ -128,7 +130,7 @@ ___
 - [Blog on CVE Scanners and their effectiveness on Alpine images](https://kubedex.com/follow-up-container-scanning-comparison/)
 - [Three places to control different docker IP subnet settings](https://serverfault.com/questions/916941/configuring-docker-to-not-use-the-172-17-0-0-range/942176#942176)
 - [Alex Ellis' Raspberry Pi blog posts](https://blog.alexellis.io/tag/raspberry-pi/)
-- [Using TLS for Localhost](https://letsencrypt.org/docs/certificates-for-localhost/)
+- [Using TLS for Localhost](https://letsencrypt.orgcertificates-for-localhost/)
 - [Traefik Proxy](https://traefik.io/)
 - [Docker and ARM announcement](https://www.theregister.co.uk/2019/04/24/docker_arm_collaberation/)
 - [AWS ARM A1 instances](https://aws.amazon.com/pt/blogs/aws/new-ec2-instances-a1-powered-by-arm-based-aws-graviton-processors/)

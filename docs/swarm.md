@@ -343,7 +343,7 @@ Testar o **load balancer** através do curl `curl localhost:9200` que irá cair 
 
 ## Assigment Swarm 1
 
-... TODO
+- [Docker Swarm Assingment 1](swarm/assignments/swarm-app-1/README.md)
 
 Para verificar os logs de todos os containers de todos os serviços foi utilizado uma feature ainda não liberada que é o comando `docker service logs`, normalmente é exigido o identificador do container.
 

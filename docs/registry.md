@@ -23,8 +23,3 @@ Além do Docker Hub, exitem outras inumeras opções, como [podem ser vistas aqu
 - Para fazer o push de imagens, deve ser utilizado a tag do repositório, para isto, iremos baixar a imagem hello-world para utilizar de exemplo `docker pull hello-world`
 - Para criar a tag `docker tag hello-world 127.0.0.1:5000/hello-world`
 - `docker push 127.0.0.1:5000/hello-world`
-
-
-
-
-

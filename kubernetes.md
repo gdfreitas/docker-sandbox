@@ -25,6 +25,9 @@ Muitas Clouds fornecem o Kubernetes como serviço, fornecendo acesso às APIs ou
 - Uma diferença entre K8s e Swarm é que para o K8s é necessário algumas ferramentas em conjunto de ferramentas para facilitar o uso (Ex: soluções de autenticação, admnistração web, etc)
   - Sendo assim raramente será utilizado o K8s puro direto do repositório, geralmente será optado por alguma distribuição
 
+- [Kubernetes Home Page](https://kubernetes.io/)
+- [History of Kubernetes](https://en.wikipedia.org/wiki/Kubernetes)
+
 ## Kubernetes ou Swarm
 
 - Kubernetes e Swarm são ambos orquestradores de containers
@@ -45,7 +48,25 @@ Muitas Clouds fornecem o Kubernetes como serviço, fornecendo acesso às APIs ou
   - Possui maior adoção e suporte da comunidade
   - _"Kubernetes first"_ suporte de fornecedores como Jenkins da CloudBeeds
 
-## Referencias
+## Terminologia Básica
 
-- [Kubernetes Home Page](https://kubernetes.io/)
-- [History of Kubernetes](https://en.wikipedia.org/wiki/Kubernetes)
+- **Kubernetes** é todo o sistema de orquestração, também chamado de **K8s** _(k-eights)_ ou _Kube_
+- **Kubectl** é a CLI para se comunicar com o Kubenetes e gerenciar os apps, também chamado de **kube control**
+- **Node** é um único server de um cluster Kubernetes (assim como no Swarm)
+- **Kubelet** é um container que irá rodar um pequeno agente em cada node para permitir que o node consiga se comunicar com o master do Kubernetes.
+  - Lembrando que o Swarm não precisa deste agente devido a comunicação já estar embutida no Docker
+- **Control Plane** as vezes também chamado de _Master_, é o responsável por gerenciar o cluster, figura similar ao Manager do Swarm.
+  - Inclui API server, scheduler, controller manager, etcd (similar ao RAFT do swarm para key-value), core dns, entre outros
+
+- [Kubernetes Components](https://kubernetes.io/docs/concepts/overview/components/#master-components)
+
+## Instalação
+
+- Há diversas maneiras de instalar, iremos focar na mais fácil para aprendizagem
+- **Docker Desktop**: habilitar no menu _Settings > Kubernetes_
+  - Configura tudo que for necessário dentro da Linux VM existente no Docker
+- **Docker Toolbox on Windows** instalar o [MiniKube](https://github.com/kubernetes/minikube/releases/)
+  - Utiliza VirtualBox para criar a Linux VM
+- **Linux Host ou VM** instalar [MicroK8s](https://github.com/ubuntu/microk8s)
+  - Instala o K8s diretamente no sistema operacional
+- **Kubernetes in a Browser**: assim como tem o _play-with-moby_ para o Docker, temos o [`http://play-with-k8s.com`](http://play-with-k8s.com) e o [`http://katacoda.com`](https://www.katacoda.com/courses/kubernetes/playground)

@@ -82,53 +82,71 @@ Muitas Clouds fornecem o Kubernetes como serviço, fornecendo acesso às APIs ou
 - [**Service**](https://kubernetes.io/docs/concepts/services-networking/service/) é um endpoint da rede que permite conexão com um cluster/pod
 - [**Namespace**](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) grupos para permitir agrupar e filtrar objetos de um cluster
 
-## Run, Create e Apply
+## Kubernetes Run, Create e Apply
 
 Kubernetes está sempre evoluindo, assim como a CLI.
 
 Temos três maneiras de criar PODs através da CLI kutectl:
 
-- `kubectl run` (está sendo alterada para ser somente criação de pods)
+- `kubectl run` (algumas features estão sendo depreciadas para ser utilizado somente em criação de pods)
 - `kubectl create` (cria alguns recursos através da CLI ou YAML)
-- `kubectl apply` (cria e atualiza qualquer coisa através de YAML)
+- `kubectl apply` (cria ou atualiza qualquer coisa através de YAML)
 
 ## Criando Pods com `kubectl`
 
 - Verificar se está funcionando `kubectl version`
 - Há duas maneiras de fazer deploy de Pods (containers): via CLI ou YAML
-
 - [Kubectl Cheat Sheet](https://kubernetes.io/docs/reference/kubectl/cheatsheet/)
 - [Kubectl for Docker Users](https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/)
 
 ### Via CLI
 
-- `kubectl run my-nginx --image nginx` (ignorar warning de depreciação)
-  - Na versão 1.14 este comando criou um `Deployment` que criou um `ReplicaSet` que então criou um `Pod` com um container do `nginx`
+- `kubectl run my-nginx --image nginx` _(ignorar warning de depreciação)_
+  - Na versão 1.14 este comando criou um `Deployment controller` que criou um `ReplicaSet controller` que então criou os `Pods`, que no caso é uma única replica do `nginx`
 - `kubectl get pods` obter lista de pods (simular ao `docker service ls`)
 - `kubectl get all` obtém todos os objetos
 - `kubectl delete deployment my-nginx` limpar os objetos criados
 
-#### Escalando número de réplicas
+## Escalando ReplicaSets
 
 - `kubectl run my-apache --image httpd` cria um deployment de somente 1 replica/pod
 - `kubectl scale deploy/my-apache --replicas 2` escala para 2 pods
-  - `kubectl scale deployment my-apache --replicas 2` comando anterior por extenso (K8s permite esta flexibilização)
+  - Há diferentes sintaxes no comando acima, podendo ser executado também assim: `kubectl scale deployment my-apache --replicas 2`
   - O objeto geralmente tem suas versões abreviadas, `deploy` = `deployment` = `deployments`
 
-#### Inspecionando Objetos
+O que aconteceu quando utilizamos o comando `scale`?
 
-- `kubectl logs deployment/my-apache` obtém os logs do pod
-  - `kubectl logs deployment/my-apache --follow --tail 1` permite seguir novos logs a partir do último 1
-- `kubectl logs -l run=my-apache` obter os logs de multiplos pods baseados em um `label` que o comando `run` aplicou
-  - O filtro por label tem um limite de 5 pods devido à obtenção ser custosa
-  - Para melhores abordagens de mullti-node logs olhar o [Stern: viewing at the CLI](https://github.com/wercker/stern)
-- `kubectl describe pod/my-apache-xxxx-yyyy` obtém a descrição de um determinado pod, incluindo eventos
+1. A `spec` de `Deployment` foi atualizada para 2 replicas
+1. O `ReplicaSet` controller atualizou a quantidade de pods para 2
+1. O `Control Plane` atribuiu um `node` para o novo pod
+1. O `Kubelet` viu que um pod era necessário e startou o container naquele node
 
-#### Teste de resiliêncie dos Pods
+### Inspecionando _Deployment Objects_
 
-- `kubectl get pods -w` obter lista de pods com a flag de watch para observar alterações
-- `kubectl delete pod/my-apache-xxxx-yyyy` deleta um pod
-- Observar o Pod sendo recriado
+- `kubectl get pods` obtém lista dos pods
+  - a flag `-w` pode ser utilizada para ter uma experiência de `watch`, atualizando em alguns segundos
+
+#### Log
+
+Este comando obtém os logs de pods
+
+- `kubectl logs deployment/my-apache` por padrão irá descrever a quantidade de pods que achou para o _name_, mas irá mostrar os logs de somente 1 _(diferente do Swarm)_
+- `kubectl logs deployment/my-apache --follow --tail 1` permite seguir novos logs a partir do último 1
+- `kubectl logs -l run=my-apache` obter os logs de multiplos pods baseados em um `selector`, neste caso um `label` que todos os pods possuem aplicado através do comando `run`
+  - O filtro por label tem um limite de 5 pods devido à obtenção de logs de múltiplos `nodes` ser custosa
+  - Para melhores abordagens de mullti-node logs olhar o [**Stern: Multi pod and container log tailing for Kubernetes**](https://github.com/wercker/stern)
+
+#### Describe
+
+Este comando obtém uma série de informações sobre o pod como: labels, IP, namespace, nodes, horário de início, lista de eventos, etc. É simular ao comando `inspect` do Swarm
+
+- `kubectl describe pod/my-apache-xxxx-yyyy` obter de um determinado pod_name
+- `kubectl describe pods` obter de todos os pods
+
+### Resiliência de pods
+
+- `kubectl get pods -w` observar lista de pods
+- `kubectl delete pod/my-apache-xxxx-yyyy` deletar um pod específico e observar a orquestração que irá recriá-lo
 
 ## Expondo Portas do Kubernetes
 

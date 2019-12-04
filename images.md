@@ -152,7 +152,7 @@ docker image push gabrieldfreitas/nginx
 - Construir a imagem `docker image build -t testnode .`
 - Rodar o container com a imagem `docker container run --rm -p 80:3000 nodetest`
 
-[Resolução pode ser encontrada em /basics/image-assignment-1/](basics/image-assignment-1/image_assingment_1.md)
+> [A aplicação pode ser encontrada em **dockerfile-nodejs-app**](basics/dockerfile-nodejs-app)
 
 ## Referências
 

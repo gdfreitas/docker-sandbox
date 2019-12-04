@@ -75,9 +75,8 @@ Como o docker possui uma política de retrocompatibilidade, os antigos não deix
 ### Básicos
 
 - [Containers](containers.md)
-- [Images](images.md)
-- [Registry](registry.md)
 - [Network](network.md)
+- [Images](images.md)
 - [Volumes](volumes.md)
 - [Compose](compose.md)
 

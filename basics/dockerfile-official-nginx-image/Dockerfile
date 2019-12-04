@@ -1,6 +1,6 @@
 # NOTE: this example is taken from the default Dockerfile for the official nginx Docker Hub Repo
 # https://hub.docker.com/_/nginx/
-# NOTE: This file is slightly different than the video, because nginx versions have been updated 
+# NOTE: This file is slightly different than the video, because nginx versions have been updated
 #       to match the latest standards from docker hub... but it's doing the same thing as the video
 #       describes
 FROM debian:stretch-slim
@@ -45,7 +45,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log
 # forward request and error logs to docker log collector
 
-EXPOSE 80 443 8080
+EXPOSE 80 443
 # expose these ports on the docker virtual network
 # you still need to use -p or -P to open/forward these ports on host
 

@@ -93,7 +93,7 @@ docker run -p 80:4000 -v ${pwd}:/site bretfisher/jekyll-serve
 - Atualizar o navegador e verificar o os posts do blog
 - Criar novos arquivos em `_posts/` e verificar alterações no site
 
-> [A aplicação pode ser encontrada em **volumes-jekyll-blog-posts**](basics/volumes-jekyll-blog-posts)
+> [A aplicação pode ser encontrada em **volumes-jekyll-blog-posts**](samples/volumes-jekyll-blog-posts)
 
 ## Referências
 

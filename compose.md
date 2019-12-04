@@ -121,7 +121,7 @@ Muitos comandos podem ter o service_name como opção
 
 Criar arquivo de Compose para o projeto abaixo e testar comandos do compose
 
-> [A aplicação pode ser encontrada em **dockerfile-nodejs-app**](basics/dockerfile-nodejs-app)
+> [A aplicação pode ser encontrada em **dockerfile-nodejs-app**](samples/dockerfile-nodejs-app)
 
 ### Exercício 01: Resolução
 

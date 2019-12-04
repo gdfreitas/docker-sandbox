@@ -76,7 +76,7 @@ docker image tag nginx gabrieldfreitas/nginx
 
 ## Build de um Dockerfile
 
-O Dockerfile deste exemplo pode ser encontrado em `/basics/dockerfile-official-nginx-image`
+O Dockerfile deste exemplo pode ser encontrado em [`dockerfile-official-nginx-image`](samples/dockerfile-official-nginx-image)
 
 ```docker
 docker image build -t customnginx .
@@ -152,7 +152,7 @@ docker image push gabrieldfreitas/nginx
 - Construir a imagem `docker image build -t testnode .`
 - Rodar o container com a imagem `docker container run --rm -p 80:3000 nodetest`
 
-> [A aplicação pode ser encontrada em **dockerfile-nodejs-app**](basics/dockerfile-nodejs-app)
+> [A aplicação pode ser encontrada em **dockerfile-nodejs-app**](samples/dockerfile-nodejs-app)
 
 ## Referências
 

@@ -4,12 +4,14 @@ version: '2'
 # uses sample site from https://startbootstrap.com/template-overviews/agency/
 
 services:
+
   proxy:
     build:
       context: .
       dockerfile: nginx.Dockerfile
     ports:
       - '80:80'
+
   web:
     image: httpd
     volumes:

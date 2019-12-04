@@ -1,22 +1,28 @@
 version: '3'
+
 volumes:
   dados:
+
 networks:
+
   banco:
   app:
   fila:
+
 services:
+
   db:
     image: postgres:9.6
     volumes:
       # volume dos dados
-      - dados:/var/lib/postgresql/data 
+      - dados:/var/lib/postgresql/data
       # scripts
-      - ./scripts:/scripts 
+      - ./scripts:/scripts
       # convenção padrão da imagem do postgres > após inicializar o banco irá executar todos os scripts ".sql" e ".sh" que estiverem neste diretório
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql 
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - banco
+
   frontend:
     image: nginx:1.13
     volumes:
@@ -30,13 +36,14 @@ services:
       - app
     depends_on:
       - api
+
   api:
     image: python:3.6
     volumes:
       # api
       - ./api:/api
     working_dir: /api
-    command: bash ./app.sh # utilizar o bash no inicio do comando permite o arquivo ser executado, alternativa para não ter que executar um chmod +x 
+    command: bash ./app.sh # utilizar o bash no inicio do comando permite o arquivo ser executado, alternativa para não ter que executar um chmod +x
     networks:
       - banco
       - app
@@ -46,10 +53,12 @@ services:
       - queue
     environment:
       - DB_NAME=abc_sender
+
   queue:
     image: redis:3.2
     networks:
       - fila
+
   worker:
     build: worker
     volumes:

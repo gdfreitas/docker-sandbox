@@ -43,8 +43,8 @@ O docker foi lançado em 2013 como um projeto open-source por uma empresa chamad
 Três principais tipos instalações: Direct, Mac/Windows e Cloud
 
 - Linux [(diferente por distribuição)](https://store.docker.com/)
-  - É recomendado que evite utilizar gerenciador de pacotes
   - CLI `curl -sSL https://get.docker.com/ | sh`
+  - _Não é recomendado instalar via gerenciador de pacotes da distribuição_
 
 - [Mac](https://docs.docker.com/docker-for-mac/)
   - É recomendado que evite utilizar gerenciador de pacotes como o _brew_
@@ -59,7 +59,20 @@ Três principais tipos instalações: Direct, Mac/Windows e Cloud
 
 ## Conceitos
 
-Nas documentações abaixo é abordado suas características, aplicado exemplos, etc.
+Nas documentações abaixo é abordado conceitos, características, exemplos de uso, etc.
+
+A versão do Docker e configurações da Engine podem ser consultadas `docker version && docker info`
+
+Os comandos do Docker podem ser consultados através de `docker --help`.
+
+Uma curiosidade é que com o passar dos anos houve uma melhora na organização dos comandos disponíveis. Pode-se perceber ao executar o comando de `--help` as divisões.
+
+- **Commands** (formato antigo) `docker <command> (options)`
+- **Management Commands** (formato novo) `docker <command> <sub-command> (options)`
+
+Como o docker possui uma política de retrocompatibilidade, os antigos não deixarão de funcionar, mas novos comandos não estarão disponíveis no antigo formato.
+
+### Básicos
 
 - [Containers](containers.md)
 - [Images](images.md)
@@ -67,8 +80,14 @@ Nas documentações abaixo é abordado suas características, aplicado exemplos,
 - [Network](network.md)
 - [Volumes](volumes.md)
 - [Compose](compose.md)
+
+### Orquestração
+
 - [Swarm](swarm.md)
 - [Kubernetes (K8s)](kubernetes.md)
+
+### Outros
+
 - [Using Docker with Node.js](nodejs.md)
 
 ## Referências
@@ -106,13 +125,6 @@ ___
 - [Article About the DCA (Docker Certificated Associate](https://www.bretfisher.com/docker-certified-associate/)
 - [Docker Extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=PeterJausovec.vscode-docker)
 - [Everything You Thought You Already Knew About Orchestration @ Youtube](https://www.youtube.com/watch?v=Qsv-q8WbIZY)
-- [Container Scanning Comparision](https://kubedex.com/follow-up-container-scanning-comparison/)
-- [Alpine Linux Docker Images, are they really more secure?](https://www.youtube.com/watch?v=e2pAkcqYCG8)
-- [Cgroups, namespaces, and beyond: what are containers made from? @ Youtube](https://www.youtube.com/watch?v=sK5i-N34im8)
-- [Package Management Basics: apt, yum, dnf, pkg](https://www.digitalocean.com/community/tutorials/package-management-basics-apt-yum-dnf-pkg)
-- [DNS: Why It’s Important and How It Works](https://dyn.com/blog/dns-why-its-important-how-it-works/)
-- [How DNS Works - Ebook](https://howdns.works/)
-- [Round-robin DNS](https://en.wikipedia.org/wiki/Round-robin_DNS)
 - [An introduction to immutable infrastructure](https://www.oreilly.com/ideas/an-introduction-to-immutable-infrastructure)
 - [The 12-Factor App (Everyone Should Read: Key to Cloud Native App Design, Deployment, and Operation)](https://12factor.net/)
 - [12 Fractured Apps (A follow-up to 12-Factor, a great article on how to do 12F correctly in containers)](https://medium.com/@kelseyhightower/12-fractured-apps-1080c73d481c#.cjvkgw4b3)

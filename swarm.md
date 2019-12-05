@@ -108,6 +108,34 @@ scale       Scale one or multiple replicated services
 update      Update a service
 ```
 
+### Swarm Update
+
+Atualizar a imagem utilizada para uma nova versão
+
+```sh
+docker service update --image myapp:1.2.1 SERVICE_NAME
+```
+
+Adicionar variável de asmbiente e remover porta em um único comando
+
+```sh
+docker service update --env-add NODE_ENV=production --publish-rm 8080
+```
+
+Alterar o número de replicas de dois services
+
+```sh
+docker service scale web=8 api=6
+```
+
+### Swarm Stack Update
+
+Para atualizar uma stack, basta executa novamente o deploy após editar o YAML
+
+```sh
+docker stack deploy -c file.yml STACK_NAME
+```
+
 ### Exemplo
 
 Inicializar um serviço com a imagem `alpine` e executar o comando ping no serviço de DNS do Google (8.8.8.8)
@@ -116,41 +144,15 @@ Inicializar um serviço com a imagem `alpine` e executar o comando ping no servi
 
 Assim como o docker run, o comando acima retorna um token identificador do serviço.
 
-Ao verificar os serviços inicializados, `docker service ls`, temos:
-
-```log
-ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
-rhup1cdyrp9g        quirky_cori         replicated          1/1                 alpine:latest
-```
+Verificar os serviços inicializados, `docker service ls`
 
 Percebe-se a coluna REPLICAS, que por padrão irá inicializar 1 replica no total de 1, e a missão primordial de um orquestrador é manter esta proporção sempre completa, ou seja, sempre tudo/tudo, todos os serviços rodando.
 
 Para cada serviço, temos seus respectivos containers, e para verifica-los pode-se usar o comando `docker service ps {SERVICE_NAME/SERVICE_ID}` > `docker service ps rhup1cdyrp9g`
 
-```log
-ID                  NAME                IMAGE               NODE                    DESIRED STATE       CURRENT STATE           ERROR
-   PORTS
-tlkaj7kik9nb        quirky_cori.1       alpine:latest       linuxkit-00155df84979   Running             Running 3 minutes ago
-```
-
 Para aumentar o número de réplicas do service, utiliza-se `docker service update {SERVICE_NAME/SERVICE_ID} --replicas 3`
 
-```log
-overall progress: 3 out of 3 tasks
-1/3: running   [==================================================>]
-2/3: running   [==================================================>]
-3/3: running   [==================================================>]
-verify: Service converged
-```
-
 Verifica-se agora que possui 3 containers rodando devido ao número de replicas que foi aumentado `docker service ps quirky_cori`
-
-```log
-ID              NAME            IMAGE           NODE                    DESIRED STATE   CURRENT STATE   ERROR   PORTS
-tlkaj7kik9nb    quirky_cori.1   alpine:latest   linuxkit-00155df84979   Running         Running 7 minutes ago
-36686n9phviu    quirky_cori.2   alpine:latest   linuxkit-00155df84979   Running         Running 32 seconds ago
-nk92vdj9y03n    quirky_cori.3   alpine:latest   linuxkit-00155df84979   Running         Running 31 seconds ago
-```
 
 Podemos configurar um monte propriedades dos serviços através do comando `docker service update --help`
 
@@ -199,12 +201,6 @@ Verificar os serviços criados `docker service ps search`
 
 Testar o **load balancer** através do curl `curl localhost:9200` que irá cair em nos 3 serviços aleatóriamente.
 
-## Assigment Swarm 1
-
-- [Docker Swarm Assingment 1](swarm/assignments/swarm-app-1/README.md)
-
-Para verificar os logs de todos os containers de todos os serviços foi utilizado uma feature ainda não liberada que é o comando `docker service logs`, normalmente é exigido o identificador do container.
-
 ## Swarm Stacks
 
 É uma camada de abstração que aceita Compose files como definição declarativa para services, networks e volumes.
@@ -221,7 +217,7 @@ Stacks gerenciam todos os objetivos, incluindo o network overlay por stack. Tamb
 
 ![Docker Swarm Stacks](images/docker-swarm-stacks.png)
 
-[Docker Swarm Stack Stack Example 1](resources/docker-mastery/swarm-stack-1/example-voting-app-stack.yml)
+[Neste diretório (**samples/swarm-stack-multinode-web-app**) podemos ver um exemplo de múltiplos serviços com Swarm Stack](samples/swarm-stack-multinode-web-app)
 
 Podemos fazer o deploy da stack acima através do comando `docker stack deploy -c example-voting-app-stack.yml voteapp`
 
@@ -248,7 +244,7 @@ Para criar pode ser utilizado o comando `docker secret create psql_user psql_use
 
 Para criar um service manualmente mapeando para os secrets, pode-se utilizar o seguinte exemplo: `docker service create --name psql --secret psql_user --secret psql_user --secret psql_pass -e POSTGRES_PASSWORD_FILE=/run/secrets/psql_pass -e POSTGRES_USER_FILE=/run/secrets/psql_user postgres`
 
-Um exemplo utilizando o stack compose [pode ser visto aqui](resources/docker-mastery/secrets-sample-2/docker-compose.yml)
+[Um exemplo utilizando o Stack Compose pode ser visto em **samples/swarm-secrets-compose-postgres**](samples/swarm-secrets-compose-postgres)
 
 ## Full App Lifecycle with Compose
 
@@ -256,7 +252,7 @@ Um exemplo utilizando o stack compose [pode ser visto aqui](resources/docker-mas
 - Remote `docker-compose up` CI environment
 - Remote `docker stack deploy` production environment
 
-[Exemplo pode ser encontrado nesta pasta](resources/docker-mastery/swarm-stack-3)
+[Exemplo pode ser encontrado em **samples/swarm-stack-compose-full-lifecycle**](samples/swarm-stack-compose-full-lifecycle)
 
 ## Service Updates
 
@@ -268,7 +264,15 @@ Um exemplo utilizando o stack compose [pode ser visto aqui](resources/docker-mas
 - Também tem sub-comandos de scale & rollback para acesso rápido `docker service scale web=4` ou `docker service rollback web` sem especificar o `--rollback` por ser muito utilizado.
 - Um stack deploy de mesmo nome, é considerado um update.
 
-### Exemplos comuns
+### Exemplo Service Update
+
+- Criar serviço `docker service create -p 8088:80 --name web nginx:1.13.7`
+- Escalar numero de replicas `docker service scale web=5`
+- Efetuar um rolling update `docker service update --image nginx:1.13.6 web`
+- Alterar uma porta publicada (remover e adicionar) `docker service update --publish-rm 8088 --publish-add 9090:80 web`
+- Forçar atualização das tasks mantendo imagem etc (é utilizado para forçar um rebalanceamento de carga entre nós) `docker service update --force web`
+
+Outro exemplo
 
 - Atualizar a imagem para uma nova versão `docker service update --image myapp:1.2.1 <service_name>`
 - Adicionar uma variável de ambiente e remover uma porta em um unico comando `docker service update --env-add NODE_ENV=production --publish-rm 8080`
@@ -276,29 +280,25 @@ Um exemplo utilizando o stack compose [pode ser visto aqui](resources/docker-mas
 
 **Dica: se a stack possui múltiplos containers, que ao longo de seus ciclos de vidas são realocados em nodes, movidos, etc podem acabar sobrecarregando fisicamente um nó específico, o Swarm em si, não move os services entre nodes, e isso pode ser feito manualmente através de atualizações dos services, que ao re-deploy irá cair no nó que está com mais recurso disponível. Pode ser feito através do comando `docker service update --force web`**
 
-## Healthchecks
+## Exercício 01
 
-- É suportado no Dockerfile, Compose YAML, docker run, e Swarm Services.
-- Docker engine irá `exec` executar o comando no container (Ex: `curl localhost`)
-  - A engine aguarda pelas seguintes respostas `exit 0` (OK) ou `exit 1` (Error)
-- Existe somente 3 tipos de estados de container: starting, healthy e unhealthy.
-- Os healthchecks em services, são executados em um intervalo de 30segundos.
-- O status do healthcheck aparece no comando `docker container ls`
-- Os ultimos 5 healthchecks aparecem no `docker container inspect`
-- O docker run considera somente o primeiro de healthcheck na inicialização
-- Services irão substituir as tasks caso o healthcheck falhe, tentando novamente provavelmente em um novo host, dependendo do scheduler.
-- Service updates aguardam os healthchecks antes de proceder.
+Criar um multi-node webapp com Swarm
 
-### Exemplos
+## Exercício 01: Resolução
 
-Exemplo utilizando docker run `docker run --health-cmd="curl -f localhost:9200/_cluster/health || false" --health-interval=5s --health-retries=3 --health-timeout=2s --health-start-period=15s elasticsearch:2`
+- [Acessar diretório do Swarm Multi-service e Multi-node Web App](samples/swarm-multinode-web-app)
 
-Exemplo no Dockerfile
+Para verificar os logs de todos os containers de todos os serviços foi utilizado uma feature ainda não liberada que é o comando `docker service logs`, normalmente é exigido o identificador do container.
 
-- `--interval=DURATION` Default: 30s
-- `--timeout=DURATION` Default: 30s
-- `--start-period=DURATION`  Default: 0s
-- `--retries=N` Default: 3
+___
+
+## Exercício 02
+
+Criar uma swarm stack com secrets e deploy
+
+## Exercício 02: Resolução
+
+- [Acessar diretório do Swarm Secrets compose Drupal](samples/swarm-secrets-compose-drupal)
 
 ## Referências
 

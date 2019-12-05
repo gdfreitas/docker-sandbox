@@ -1,0 +1,12 @@
+version: '3.4' # Versão mínima para health checks é 2.1
+
+services:
+
+  elasticsearch:
+    image: elasticsearch:2
+    healthcheck:
+      test: ['CMD','curl','-f','localhost:9200/_cluster/health']
+      interval: 5s
+      timeout: 2s
+      retries: 15
+      start_period: 15s # versão mínima 3.4 para utilizá-lo

@@ -199,6 +199,21 @@ Para os containers criados via docker run, é possível utilizar este comando pa
 
 É possível consultar todas as propriedades disponíveis através do comando `docker container update --help`
 
+## Healthchecks
+
+- É suportado no Dockerfile, Compose YAML, docker run, e Swarm Services.
+- Docker engine irá executar através do `exec` o comando especificado no container alvo (Ex: `curl localhost`)
+  - A engine aguarda pelas seguintes respostas `exit 0` (OK) ou `exit 1` (Error)
+- Existe somente 3 tipos de estados de container: **starting**, **healthy** e **unhealthy**.
+- Os healthchecks em services, são executados em um intervalo de 30 segundos.
+- O status do healthcheck aparece no comando `docker container ls`
+- Os ultimos 5 healthchecks aparecem no `docker container inspect`
+- O docker run considera somente o primeiro de healthcheck na inicialização
+- Swarm Services irão substituir as tasks caso o healthcheck falhe, tentando novamente provavelmente em um novo host, dependendo do scheduler.
+- Swarm Service updates aguardam os healthchecks antes de proceder.
+
+[Um exemplo de uso deste comando via docker run pode ser visto em **samples/healthcheck-elasticsearch**](samples/healthcheck-elasticsearch)
+
 ## Curiosidade: Executando imagem Alpine
 
 É uma imagem muito pequena do linux (4MB, a do ubuntu é 84MB) bastante utilizada em imagens do Docker.

@@ -148,37 +148,91 @@ Este comando obtém uma série de informações sobre o pod como: labels, IP, na
 - `kubectl get pods -w` observar lista de pods
 - `kubectl delete pod/my-apache-xxxx-yyyy` deletar um pod específico e observar a orquestração que irá recriá-lo
 
-## Expondo Portas do Kubernetes
+## Expondo Portas do Kubernetes através de services
 
 - `kubectl expose` cria um **Service** para Pods existentes
-- Um **Service** é um endereço para Pods, é necessário para conectar a Pods
-- CoreDNS permite resolver services por nome
-- Há diferentes tipos de services
-  - **ClusterIP** (default) é único e irá obter IP virtual interno no cluster (visível somente de dentro do cluster por nodes e pods através de suas respectivas portas)
-  - **NodePort** deve ser utilizado para external, aloca um _high port_ para cada node, a porta é aberta em todos os IPs do node
-  - **LoadBalancer** é mais utilizado em cloud, que permite controlar um endpoint externo de load balancer para o cluster (ex: AWS ELB, etc)
-  - **ExternalName** é usado para quando aplicacoes do cluster precisam acessar recurso externos, adiciona CNAME DNS para o CoreDNS
+- Um **Service** é um endereço persistente para Pods permitindo então um acesso externo
+- CoreDNS permite resolver **Services** por nome
+- E para gerênciar o tráfego, (obter IP, porta, etc) há diferentes tipos de **Services**
+  - **ClusterIP** (default) É utilizado para comunicação interna do cluster, onde aloca um IP virtual, sendo então visível somente de dentro do cluster por Nodes e Pods através de suas respectivas portas.
+  - **NodePort** É utilizado para acessos externos ao cluster, aloca um _high port_ para cada node, a porta é aberta em todos os IPs do node
+  - **LoadBalancer** É mais utilizado em Clouds, sendo em sua essência automação para criar um services NodePort+ClusterIP, permitindo controlar um endpoint externo de Load Balancer para gerênciar o tráfego que chega no Cluster. Requer um provedor de infraestrutura (Ex: AWS ELB, etc)
+  - **ExternalName** É usado para quando aplicações do Cluster precisam acessar recurso externos. Não é utilizado por Pods, mas sim para dar a Pods DNS Names de algum recurso externo ao Kubernetes.
 
 - [Service - Documentation](https://kubernetes.io/docs/concepts/services-networking/service/)
 - [Service Types - Tutorial](https://kubernetes.io/docs/tutorials/services/)
 
-### Criando um service com ClusterIP
+### Criando um Service com ClusterIP
 
-- `kubectl get pods -w` observar alterações
-- `kubectl create deployment httpenv --image=bretfisher/httpenv` criar um servidor http utilizando código de exemplo
-- `kubectl scale deployment httpenv --replicas=5` escalar 5 replicas para podermos ter mais de um container
-- `kubectl expose deployment httpenv --port 8888` expor através de um service a porta 8888
-- `kubectl get service` obter os services
-- `kubectl run --generator run-pod/v1 tmp-shell --rm -it --image bretfisher/netshoot -- bash` como o ClusterIP só é visível dentro do cluster, no Docker Desktop temos que rodar um outro pod para testar o `curl`
-  - Após a criação do container, basta executar `curl httpenv:8888` e obter a resposta que são as variáveis de ambiente do container
+Executar o comando abaixo em um terminal separado para observar as alterações
+
+```sh
+kubectl get pods -w
+```
+
+Criar um deployment de uma imagem que retorna as variáveis de ambiente do host ao acessar via CURL
+
+```sh
+kubectl create deployment httpenv --image=bretfisher/httpenv
+```
+
+Escalar 5 replicas para podermos ter mais de um container
+
+```sh
+kubectl scale deployment httpenv --replicas=5
+```
+
+Expor através de um Service a porta `8888`
+
+```sh
+kubectl expose deployment httpenv --port 8888
+```
+
+Obter lista de services e verificar a criação do novo Service do tipo ClusterIP expondo 8888/TCP
+
+```sh
+kubectl get service
+```
+
+#### Testar via Docker Desktop
+
+Como o ClusterIP é visível somente dentro do Cluster e ao utilizar o Docker Desktop, a maquina host não têm acesso direto ao cluster que estará rodando numa Linux VM, então é necessáriorodar um outro pod para testar o `curl`
+
+```sh
+kubectl run --generator run-pod/v1 tmp-shell --rm -it --image bretfisher/netshoot -- bash
+```
+
+Após a criação do container, basta executar o curl abaixo e obter a resposta que são as variáveis de ambiente do container
+
+```bash
+curl httpenv:8888
+```
+
+#### Testar via Linux host
+
+No linux, a maquina que estiver rodando o Kubernetes terá acesso a todos os recursos normalmente, basta executar o curl
+
+```sh
+curl CLUSTER_IP:8888 # Obter através do "kubectl get service"
+```
 
 - [Using Services - Tutorial](https://kubernetes.io/docs/tutorials/kubernetes-basics/expose/expose-intro/)
 
-### Criando um service NodePort
+### Criando um Service NodePort
 
-- `kubectl expose deployment httpenv --port 8888 --name httpenv-np --type NodePort` expoe o NodePort para permitir acesso através do host IP
+Continuando o exemplo acima, expor o NodePort para permitir acesso através do host IP
 
-- Ao obter `kubectl get all` percebe-se a criação do NodePort, entretanto é importante dizer que a lógica de leitura das portas é o inverso do docker, ficando no caso `CONTAINER_PORT:HOST_PORT`
+```sh
+kubectl expose deployment httpenv --port 8888 --name httpenv-np --type NodePort
+```
+
+Obter a lista de objetos para verificar a criação do NodePort
+
+```sh
+kubectl get all
+```
+
+**Importante** A lógica de interpretação das portas é o inverso do Docker, ficando no caso `CONTAINER_PORT:HOST_PORT`
 
 ```log
 NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
@@ -187,20 +241,37 @@ service/httpenv-np   NodePort    10.108.34.168   <none>        8888:30079/TCP   
 service/kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP          94m
 ```
 
-- No log acima entõa no NodePort temos no host a porta 30079 exposta, do intervalo permitido (`30000-32767`) por serem portas altas, evitam conflitos.
+Percebe-se através do log acima que o NodePort está na _high port_ 30079 do host (do intervalo permitido de `30000` até `32767`)
 
-- Os serviços abaixo são _aditivos_ e cada tipo de serviço cria o serviço acima
-  - ClusterIP
-  - NodePort
-  - LoadBalancer
+Para testar no Docker Desktop basta acessar `http://localhost:30079`
+
+Os serviços abaixo podem ser interpretados como _aditivos_ e cada tipo de serviço cria o serviço acima
+
+- ClusterIP
+- NodePort (+ClusterIP)
+- LoadBalancer (+NodePort+ClusterIP)
 
 - [NodePort - Documentation](https://kubernetes.io/docs/concepts/services-networking/service/#nodeport)
 
 ### Criando um service LoadBalancer
 
-- `kubectl expose deployment httpenv --port 8888 --name httpenv-lb --type LoadBalancer` criar o load balancer
-- `curl localhost:8888` na maquina host para testar o loadbalancer
-- `kubectl delete service/httpenv service/httpenv-np service/httpenv-lb deployment/httpenv` cleanup
+Continuando o exemplo acima, se estiver no Docker Destkop, o qual provê um LoadBalancer embutido, podemos testá-lo (não é possível no `kubeadm`, `minikube` ou `microk8s`)
+
+```sh
+kubectl expose deployment httpenv --port 8888 --name httpenv-lb --type LoadBalancer
+```
+
+Executar `curl` na maquina host para testar o LoadBalancer
+
+```sh
+curl localhost:8888
+```
+
+Efetuar a limpeza
+
+```sh
+kubectl delete service/httpenv service/httpenv-np service/httpenv-lb deployment/httpenv
+```
 
 ### Kubernetes Services DNS
 

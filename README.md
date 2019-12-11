@@ -83,7 +83,6 @@ Como o docker possui uma política de retrocompatibilidade, os antigos não deix
 ### Orquestração
 
 - [Swarm](swarm.md)
-- [Kubernetes (K8s)](kubernetes.md)
 
 ### Outros
 
